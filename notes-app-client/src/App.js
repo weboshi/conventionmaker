@@ -2,8 +2,10 @@ import React, { Component, Fragment } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import { Link, withRouter } from "react-router-dom";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
+import Nav from 'react-bootstrap/Nav'
+// import { Nav, Navbar, NavItem } from "react-bootstrap";
 import Routes from "./Routes";
+import Navbar from 'react-bootstrap/Navbar'
 import "./App.css";
 
 class App extends Component {
@@ -51,23 +53,22 @@ render() {
   return (
     !this.state.isAuthenticating &&
     <div className="App container">
-      <Navbar fluid collapseOnSelect>
-        <Navbar.Header>
+      <Navbar bg="light" expand="lg">
           <Navbar.Brand>
-            <Link to="/">Scratch</Link>
+            <LinkContainer to="/"><Nav.Link>Scratch</Nav.Link></LinkContainer>
+      
           </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+          <Nav>
             {this.state.isAuthenticated
-              ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+              ? <Nav.Link onClick={this.handleLogout}>Logout</Nav.Link>
               : <Fragment>
                   <LinkContainer to="/signup">
-                    <NavItem>Signup</NavItem>
+                    <Nav.Link>Signup</Nav.Link>
                   </LinkContainer>
                   <LinkContainer to="/login">
-                    <NavItem>Login</NavItem>
+                    <Nav.Link>Login</Nav.Link>
                   </LinkContainer>
                 </Fragment>
             }

@@ -9,6 +9,7 @@ import Signup from './Containers/Signup';
 import AppliedRoute from "./components/AppliedRoute";
 import NewNote from "./Containers/NewNote";
 import Notes from "./Containers/Notes";
+import CreateConvention from "./Containers/createconvention"
 
 
 export default ({ childProps }) =>
@@ -18,6 +19,7 @@ export default ({ childProps }) =>
     <UnauthenticatedRoute path="/signup" exact component={Signup} props={childProps} />
     <AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />
+    <AuthenticatedRoute path="/convention/new" exact component={CreateConvention} props={childProps} />
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFound} />
   </Switch>;

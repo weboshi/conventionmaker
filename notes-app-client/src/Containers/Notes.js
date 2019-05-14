@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { API, Storage } from "aws-amplify";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import Form from 'react-bootstrap/Form'
 import LoaderButton from "../components/LoaderButton";
 import { s3Upload } from "../libs/awsLib";
 import config from "../config";
@@ -128,17 +128,17 @@ export default class Notes extends Component {
       <div className="Notes">
         {this.state.note &&
           <form onSubmit={this.handleSubmit}>
-            <FormGroup controlId="content">
-              <FormControl
+            <Form.Group controlId="content">
+              <Form.Control
                 onChange={this.handleChange}
                 value={this.state.content}
-                componentClass="textarea"
+                as='textarea'
               />
-            </FormGroup>
+            </Form.Group>
             {this.state.note.attachment &&
-              <FormGroup>
-                <ControlLabel>Attachment</ControlLabel>
-                <FormControl.Static>
+              <Form.Group>
+                <Form.Label style={{fontWeight:'bold'}}>Attachment</Form.Label>
+                <Form.Label style={{display:'block'}}>
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
@@ -146,30 +146,28 @@ export default class Notes extends Component {
                   >
                     {this.formatFilename(this.state.note.attachment)}
                   </a>
-                </FormControl.Static>
-              </FormGroup>}
-            <FormGroup controlId="file">
+                </Form.Label>
+              </Form.Group>}
+            <Form.Group controlId="file">
               {!this.state.note.attachment &&
-                <ControlLabel>Attachment</ControlLabel>}
-              <FormControl onChange={this.handleFileChange} type="file" />
-            </FormGroup>
+                <Form.Label>Attachment</Form.Label>}
+              <Form.Control onChange={this.handleFileChange} type="file" />
+            </Form.Group>
             <LoaderButton
               block
-              bsStyle="primary"
-              bsSize="large"
               disabled={!this.validateForm()}
               type="submit"
               isLoading={this.state.isLoading}
               text="Save"
+              variant='primary'
               loadingText="Saving…"
             />
             <LoaderButton
               block
-              bsStyle="danger"
-              bsSize="large"
               isLoading={this.state.isDeleting}
               onClick={this.handleDelete}
               text="Delete"
+              variant='danger'
               loadingText="Deleting…"
             />
           </form>}

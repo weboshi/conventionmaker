@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import ListGroup from 'react-bootstrap/ListGroup'
 import { LinkContainer } from "react-router-bootstrap";
 import { API } from "aws-amplify";
 import "./home.css";
@@ -41,19 +41,20 @@ export default class Home extends Component {
               key={note.noteId}
               to={`/notes/${note.noteId}`}
             >
-              <ListGroupItem header={note.content.trim().split("\n")[0]}>
+              <ListGroup.Item action>
+                <p className="note-header">{note.content.trim().split("\n")[0]}</p>
                 {"Created: " + new Date(note.createdAt).toLocaleString()}
-              </ListGroupItem>
+              </ListGroup.Item>
             </LinkContainer>
           : <LinkContainer
               key="new"
               to="/notes/new"
             >
-              <ListGroupItem>
+              <ListGroup.Item action>
                 <h4>
                   <b>{"\uFF0B"}</b> Create a new note
                 </h4>
-              </ListGroupItem>
+              </ListGroup.Item>
             </LinkContainer>
     );
   }
@@ -61,8 +62,8 @@ export default class Home extends Component {
   renderLander() {
     return (
       <div className="lander">
-        <h1>Scratch</h1>
-        <p>A simple note taking app</p>
+        <h1>Convention Maker</h1>
+        <p>Use Convention Maker to create a landing page for your convention, complete with schedule, pages and notifications.</p>
       </div>
     );
   }
@@ -70,7 +71,7 @@ export default class Home extends Component {
   renderNotes() {
     return (
       <div className="notes">
-        <PageHeader>Your Notes</PageHeader>
+        <h1>Your Notes</h1>
         <ListGroup>
           {!this.state.isLoading && this.renderNotesList(this.state.notes)}
         </ListGroup>

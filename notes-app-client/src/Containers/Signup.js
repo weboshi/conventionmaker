@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import {
-  HelpBlock,
   FormGroup,
   FormControl,
-  ControlLabel
+  FormLabel
 } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import { Auth } from "aws-amplify";
@@ -82,14 +81,14 @@ export default class Signup extends Component {
     return (
       <form onSubmit={this.handleConfirmationSubmit}>
         <FormGroup controlId="confirmationCode" bsSize="large">
-          <ControlLabel>Confirmation Code</ControlLabel>
+          <FormLabel>Confirmation Code</FormLabel>
           <FormControl
             autoFocus
             type="tel"
             value={this.state.confirmationCode}
             onChange={this.handleChange}
           />
-          <HelpBlock>Please check your email for the code.</HelpBlock>
+          {/* <HelpBlock>Please check your email for the code.</HelpBlock> */}
         </FormGroup>
         <LoaderButton
           block
@@ -108,7 +107,7 @@ export default class Signup extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
+          <FormLabel>Email</FormLabel>
           <FormControl
             autoFocus
             type="email"
@@ -117,7 +116,7 @@ export default class Signup extends Component {
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
+          <FormLabel>Password</FormLabel>
           <FormControl
             value={this.state.password}
             onChange={this.handleChange}
@@ -125,7 +124,7 @@ export default class Signup extends Component {
           />
         </FormGroup>
         <FormGroup controlId="confirmPassword" bsSize="large">
-          <ControlLabel>Confirm Password</ControlLabel>
+          <FormLabel>Confirm Password</FormLabel>
           <FormControl
             value={this.state.confirmPassword}
             onChange={this.handleChange}
