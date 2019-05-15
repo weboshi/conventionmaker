@@ -12,10 +12,13 @@ export default class CreateConvention extends Component {
     this.state = {
         isLoading: false,
         startDate: new Date(),
+        endDate: new Date(),
         name: '',
         tagline: '',
       };
-      this.handleDateChange = this.handleDateChange.bind(this);
+      this.handleStartDateChange = this.handleStartDateChange.bind(this);
+      this.handleEndDateChange = this.handleEndDateChange.bind(this);
+
 
   }
 
@@ -23,9 +26,15 @@ export default class CreateConvention extends Component {
     return this.state.name.length > 0 && this.state.tagline.length > 0 && this.state.startDate;
   }
 
-  handleDateChange(date) {
+  handleStartDateChange(date) {
     this.setState({
       startDate: date
+    });
+  }
+
+  handleEndDateChange(date) {
+    this.setState({
+      endDate: date
     });
   }
 
@@ -52,10 +61,56 @@ export default class CreateConvention extends Component {
   render() {
     return (
       <div className="Create-Convention">
-<Form>
-
-
-</Form>;
+        <Form>
+          <Form.Group controlId="name">
+            <Form.Label>Name of the Convention</Form.Label>
+            <Form.Control placeholder="Enter name" />
+            <Form.Text className="text-muted">
+              Your convention's name, people will search for it by this name.
+            </Form.Text>
+          </Form.Group>
+          <Form.Group controlId="headline">
+            <Form.Label>Convention Headline</Form.Label>
+            <Form.Control placeholder="Enter headline" />
+            <Form.Text className="text-muted">
+              A brief description of your convention. 
+            </Form.Text>
+          </Form.Group>
+          <Form.Group controlId="description">
+            <Form.Label>Convention Description</Form.Label>
+            <Form.Control as="textarea" placeholder="Enter description" />
+            <Form.Text className="text-muted">
+              Describe your convention.
+            </Form.Text>
+          </Form.Group>
+          <div className="date-picker">
+            Start Date 
+            <DatePicker
+              selected={this.state.startDate}
+              onChange={this.handleStartDateChange}
+            />
+          </div>
+          <div className="date-picker">
+            End Date 
+            <DatePicker
+              selected={this.state.endDate}
+              onChange={this.handleEndDateChange}
+            />
+          </div>
+          <LoaderButton
+            block
+            bsStyle="primary"
+            bsSize="large"
+            disabled={!this.validateForm()}
+            type="submit"
+            isLoading={this.state.isLoading}
+            text="Create Convention"
+            loadingText="Creating…"
+          />
+          <Form.Text className="text-muted">
+            Once you create the convention, you will be able to fill out the rest of the details later.
+          </Form.Text>
+        </Form>
       </div>
     );
   }

@@ -17,4 +17,4 @@ export default ({
   >
     {/* {isLoading && } */}
     {!isLoading ? text : loadingText}
-  </Button>;
+  </Button>

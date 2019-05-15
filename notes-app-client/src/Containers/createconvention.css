@@ -1,5 +1,6 @@
 @media all and (min-width: 480px) {
-    .Create-convention {
+    .Create-Convention {
+      margin-top: 20px;
       padding: 60px 0;
     }
   
@@ -8,3 +9,13 @@
       max-width: 500px;
     }
   }
+
+.Create-Convention {
+    margin-top: 20px;
+}
+
+.date-picker {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
