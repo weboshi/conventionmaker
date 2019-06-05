@@ -30,25 +30,25 @@ export default class Home extends Component {
   }
   
   notes() {
-    return API.get("conventions", "/conventions");
+    return API.get("notes", "/notes");
   }
 
-  renderNotesList(conventions) {
-    return [{}].concat(conventions).map(
-      (convention, i) =>
+  renderNotesList(notes) {
+    return [{}].concat(notes).map(
+      (note, i) =>
         i !== 0
           ? <LinkContainer
-              key={convention.conId}
-              to={`/convention/${convention.conId}`}
+              key={note.noteId}
+              to={`/notes/${note.noteId}`}
             >
               <ListGroup.Item action>
-                <p className="note-header">{convention.title.trim().split("\n")[0]}</p>
-                {"Created: " + new Date(convention.createdAt).toLocaleString()}
+                <p className="note-header">{note.content.trim().split("\n")[0]}</p>
+                {"Created: " + new Date(note.createdAt).toLocaleString()}
               </ListGroup.Item>
             </LinkContainer>
           : <LinkContainer
               key="new"
-              to="/convention/new"
+              to="/notes/new"
             >
               <ListGroup.Item action>
                 <h4>

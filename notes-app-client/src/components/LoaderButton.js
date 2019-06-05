@@ -4,7 +4,9 @@ import "./LoaderButton.css";
 
 export default ({
   isLoading,
+  onSuccess,
   text,
+  successText = "Success!",
   loadingText,
   className = "",
   disabled = false,
@@ -16,5 +18,7 @@ export default ({
     {...props}
   >
     {/* {isLoading && } */}
-    {!isLoading ? text : loadingText}
+    {isLoading && !onSuccess && loadingText}
+    {!isLoading && !onSuccess && text}
+    {onSuccess && successText}
   </Button>

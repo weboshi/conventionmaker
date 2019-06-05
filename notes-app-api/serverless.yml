@@ -1,4 +1,4 @@
-service: notes-app-api
+service: convention-app-api
 
 # Use the serverless-webpack plugin to transpile ES6
 plugins:
@@ -43,7 +43,7 @@ functions:
     handler: create.main
     events:
       - http:
-          path: notes
+          path: conventions
           method: post
           cors: true
           authorizer: aws_iam
@@ -55,7 +55,7 @@ functions:
     handler: get.main
     events:
       - http:
-          path: notes/{id}
+          path: conventions/{id}
           method: get
           cors: true
           authorizer: aws_iam
@@ -66,21 +66,22 @@ functions:
     handler: list.main
     events:
       - http:
-          path: notes
+          path: conventions
           method: get
           cors: true
           authorizer: aws_iam
   update:
-      # Defines an HTTP API endpoint that calls the main function in update.js
-      # - path: url path is /notes/{id}
-      # - method: PUT request
-      handler: update.main
-      events:
-        - http:
-            path: notes/{id}
-            method: put
-            cors: true
-            authorizer: aws_iam
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.main
+    events:
+      - http:
+          path: conventions/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+
   delete:
       # Defines an HTTP API endpoint that calls the main function in delete.js
       # - path: url path is /notes/{id}
@@ -88,7 +89,7 @@ functions:
       handler: delete.main
       events:
         - http:
-            path: notes/{id}
+            path: conventions/{id}
             method: delete
             cors: true
             authorizer: aws_iam

@@ -1,0 +1,24 @@
+.Header {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.Subheader {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.Edit-Convention .Options {
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+
+.EditFormButton {
+    opacity: 50%;
+    display: inline-block;
+}
+
+.EditFormButton:hover {
+    opacity: 100%;
+}

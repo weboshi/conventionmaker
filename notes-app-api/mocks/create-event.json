@@ -1,5 +1,5 @@
 {
-    "body": "{\"content\":\"hello world\",\"attachment\":\"hello.jpg\"}",
+    "body": "{\"title\":\"JCONdddddd\",\"headline\":\"The Premier Japanese Culture & Music Convention\",\"description\":\"A two day convention full of exciting guests and musical concerts. Come meet Japanese celebrities and musicians.\",\"start\":\"Dec 20 98\",\"end\":\"Dec 22 98\"}",
     "requestContext": {
       "identity": {
         "cognitoIdentityId": "USER-SUB-1234"

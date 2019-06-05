@@ -72,7 +72,7 @@ export default class NewNote extends Component {
             <FormControl
               onChange={this.handleChange}
               value={this.state.content}
-              componentClass="textarea"
+              as="textarea"
             />
           </FormGroup>
           <FormGroup controlId="file">
