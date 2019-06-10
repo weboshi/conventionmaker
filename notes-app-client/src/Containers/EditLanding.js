@@ -5,10 +5,9 @@ import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import { API } from "aws-amplify";
 import { s3Upload } from "../libs/awsLib"
-import "./CreateConvention.css";
-import "react-datepicker/dist/react-datepicker.css";
+import "./EditLanding.css";
 
-export default class CreateConvention extends Component {
+export default class EditLanding extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,9 +18,11 @@ export default class CreateConvention extends Component {
         title: '',
         headline: '',
         description: '',
+        header: '',
       };
       this.handleStartDateChange = this.handleStartDateChange.bind(this);
       this.handleEndDateChange = this.handleEndDateChange.bind(this);
+      this.handleImageChange = this.handleImageChange.bind(this);
 
 
   }
@@ -79,16 +80,31 @@ export default class CreateConvention extends Component {
     });
   }
 
+  handleImageChange(event) {
+    this.setState({
+      file: URL.createObjectURL(event.target.files[0])
+    })
+  }
+
   render() {
     return (
       <div className="Create-Convention">
+        <div className="section-header">
+          <h4>Edit Landing Page</h4>
+        </div>
         <Form>
-          <Form.Group controlId="title">
-            <Form.Label>Name of the Convention</Form.Label>
+          <Form.Group controlId="file">
+            <Form.Label>Convention Banner</Form.Label>
+            {this.state.file && <img src={this.state.file} width='800' height='200'></img>}
+            <Form.Control onChange={this.handleImageChange} type="file" />
+            <Form.Text>Upload an image to be your convention's banner. Should be 700 x 200.</Form.Text>
+          </Form.Group>
+          <Form.Group controlId="header">
+            <Form.Label>Convention Text Header</Form.Label>
             <Form.Control 
               placeholder="Enter name"
               onChange={this.handleChange}
-              value={this.state.title}
+              value={this.state.header}
             />
             <Form.Text className="text-muted">
               Your convention's name, people will search for it by this name.

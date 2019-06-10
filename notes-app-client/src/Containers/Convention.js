@@ -138,10 +138,8 @@ export default class Notes extends Component {
       <div className="Notes">
         {this.state.note &&
                <div className="Edit-Convention">
-               <Tabs defaultActiveKey="home" transition={false} id="noanim-tab-example">
-               <Tab eventKey="home" title="Home">
                <div className='Edit-Convention Header'>
-                    <h3>{this.state.title}</h3>
+                    <h3 style={{margin:"30px"}}>{this.state.title}</h3>
                   <h4>Welcome to your convention dashboard</h4>
                   <h4>Here you can bring your convention to life.</h4>
                </div>
@@ -158,20 +156,15 @@ export default class Notes extends Component {
                    <Link to="/convention/edit/basic">Events</Link> is where you can create your pages for your convention's events.
                </div>
                <div className='Edit-Convention Options'>
-                   <Link to="/convention/edit/basic">Landing</Link> is what users will first see when visiting your convention page. Use this to advertise what makes your convention special.
+                   <Link to={`/convention/edit/landing/${this.state.conId}`}>Landing</Link> is what users will first see when visiting your convention page. Use this to advertise what makes your convention special.
                </div>
                <div className='Edit-Convention Options'>
-                   <Link to="/convention/edit/basic">F.A.Q.</Link> is a page for frequently asked questions. 
+                   <Link to={`/convention/edit/faq/${this.state.conId}`}>F.A.Q.</Link> is a page for frequently asked questions. 
                </div>
                <div className='Edit-Convention Options'>
                    <Link to="/convention/edit/basic">Publish</Link> Once you have completed your convention, make sure to publish it so users can see it.
                </div>
-               </Tab>
-               <Tab eventKey="profile" title="Profile">
-               </Tab>
-               <Tab eventKey="contact" title="Contact" disabled>
-               </Tab>
-               </Tabs>
+
                </div>
         }
       </div>

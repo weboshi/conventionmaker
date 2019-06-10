@@ -28,8 +28,8 @@ export default class CreateConvention extends Component {
     super(props);
     this.state = {
         isLoading: false,
-        start: '',
-        end: '',
+        startDate: '',
+        endDate: '',
         title: '',
         headline: '',
         description: '',
@@ -44,27 +44,21 @@ export default class CreateConvention extends Component {
   componentDidMount = async () => {
     try {
       const convention = await this.getConvention();
-      const { title, headline, description, start, end } = convention;
-      console.log(start)
+      const { title, headline, description, startDate, endDate } = convention;
+      console.log(startDate)
 
       this.setState({
         title,
         headline,
         description,
-        start: new Date(start),
-        end: new Date(end),
+        startDate: new Date(startDate),
+        endDate: new Date(endDate)
       })
 
     }
     catch(e) {
       alert(e)
     }
-  }
-
-  saveNote(note) {
-    return API.put("notes", `/notes/${this.props.match.params.id}`, {
-      body: note
-    });
   }
 
   handleSubmit = async () => {
@@ -75,8 +69,8 @@ export default class CreateConvention extends Component {
         title: this.state.title,
         headline: this.state.headline,
         description: this.state.description,
-        start: this.state.start,
-        end: this.state.end
+        startDate: this.state.startDate,
+        endDate: this.state.endDate
       })
       window.location.reload()
     }
@@ -96,18 +90,18 @@ export default class CreateConvention extends Component {
   }
 
   validateForm() {
-    return this.state.title.length > 0 && this.state.headline.length > 0 && this.state.start;
+    return this.state.title.length > 0 && this.state.headline.length > 0 && this.state.description.length > 0 && this.state.startDate && this.state.endDate;
   }
 
   handleStartDateChange(date) {
     this.setState({
-      start: date
+      startDate: date
     });
   }
 
   handleEndDateChange(date) {
     this.setState({
-      end: date
+      endDate: date
     });
   }
 
@@ -118,8 +112,6 @@ export default class CreateConvention extends Component {
   }
 
   handleEdit = (e) => {
-      console.log(e.currentTarget)
-      console.log(e.target.id)
       this.setState({
           editing: e.target.id
       })
@@ -220,14 +212,14 @@ export default class CreateConvention extends Component {
         <div className="date-picker">
         Start Date 
         <DatePicker
-            selected={this.state.start}
+            selected={this.state.startDate}
             onChange={this.handleStartDateChange}
         />
       </div>
       <div className="date-picker">
         End Date 
         <DatePicker
-            selected={this.state.end}
+            selected={this.state.endDate}
             onChange={this.handleEndDateChange}
         />
       </div></Form.Group>)
@@ -238,7 +230,7 @@ export default class CreateConvention extends Component {
             Start Date 
             <DatePicker
             disabled
-            selected={this.state.start}
+            selected={this.state.startDate}
             onChange={this.handleStartDateChange}
             />
             </div>
@@ -246,7 +238,7 @@ export default class CreateConvention extends Component {
             End Date 
             <DatePicker
                 disabled
-                selected={this.state.end}
+                selected={this.state.endDate}
                 onChange={this.handleEndDateChange}
             />
             </div>

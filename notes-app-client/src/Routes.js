@@ -9,11 +9,12 @@ import Signup from './Containers/Signup';
 import AppliedRoute from "./components/AppliedRoute";
 import NewNote from "./Containers/NewNote";
 import Notes from "./Containers/Notes";
-import CreateConvention from "./Containers/createconvention";
+import CreateConvention from "./Containers/CreateConvention";
 import EditConvention from "./Containers/EditConvention";
 import EditBasic from "./Containers/EditBasic";
 import Convention from "./Containers/Convention";
 import EditFaq from "./Containers/EditFaq";
+import EditLanding from "./Containers/EditLanding";
 
 
 export default ({ childProps }) =>
@@ -28,6 +29,7 @@ export default ({ childProps }) =>
     <AuthenticatedRoute path="/convention/edit/basic/:id" exact component={EditBasic} props={childProps} />
     <AuthenticatedRoute path="/convention/:id" exact component={Convention} props={childProps} />
     <AuthenticatedRoute path="/convention/edit/faq/:id" exact component={EditFaq} props={childProps} />
+    <AuthenticatedRoute path="/convention/edit/landing/:id" exact component={EditLanding} props={childProps} />
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFound} />
-  </Switch>;
+  </Switch>

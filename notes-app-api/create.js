@@ -14,8 +14,8 @@ export async function main(event, context) {
       title: data.title,
       headline: data.headline,
       description: data.description,
-      start: data.start,
-      end: data.end
+      startDate: data.startDate,
+      endDate: data.endDate
     }
   };
 

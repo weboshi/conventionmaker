@@ -1,0 +1,80 @@
+.faq-panel { 
+    width: 100%;
+    text-align: center;
+}
+
+.faq-control {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.faq-questions {
+    text-align: center;
+}
+
+.section-header {
+    text-align: center;
+}
+
+.question-label {
+    flex: 1
+}
+
+.editIcon {
+    cursor: pointer;
+    margin-left: 5px;
+    color: rgb(55, 108, 255);
+}
+
+.faq-question-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.faq-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.faq-header-section {
+    display: inline-block;
+    width: 33%;
+}
+
+.editOptions {
+    text-align: right;
+}
+
+.redIcon {
+    color: red;
+}
+
+.delete-panel {
+    text-align: center;
+}
+
+.delete-panel-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.delete-panel-buttons Button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.order-edit {
+    width: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.order-edit select {
+    text-align: center;
+}
+
+.alert-p {
+    margin-bottom: 0;
+}

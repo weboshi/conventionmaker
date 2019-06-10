@@ -29,3 +29,9 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.form-group label { 
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

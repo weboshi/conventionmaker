@@ -55,8 +55,7 @@ render() {
     <div className="App container">
       <Navbar bg="light" expand="lg">
           <Navbar.Brand>
-            <LinkContainer to="/"><Nav.Link>Scratch</Nav.Link></LinkContainer>
-      
+            <LinkContainer to="/"><Nav.Link>Convention Maker</Nav.Link></LinkContainer>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
