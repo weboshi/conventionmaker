@@ -61,7 +61,7 @@ export default class CreateConvention extends Component {
             To the left you will find the navigation options for editing your convention.
             </div>
             <div className='Edit-Convention Options'>
-                <Link to="/convention/edit/basic">Basic</Link> is where you can edit the fundamental imformation about your convention, which you input when you created it.
+                <Link to="/convention/edit/basic">Basic</Link> is where you can edit the fundamental information about your convention, which you input when you created it.
             </div>
             <div className='Edit-Convention Options'>
                 <Link to="/convention/edit/basic">Schedule</Link> lets you create your convention's schedule with time, duration and location.

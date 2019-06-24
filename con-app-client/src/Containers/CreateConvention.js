@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import { API } from "aws-amplify";
+import Script from 'react-load-script';
 import { s3Upload } from "../libs/awsLib"
 import "./CreateConvention.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -19,15 +20,17 @@ export default class CreateConvention extends Component {
         title: '',
         headline: '',
         description: '',
+        city: '',
+        query: ''
       };
       this.handleStartDateChange = this.handleStartDateChange.bind(this);
       this.handleEndDateChange = this.handleEndDateChange.bind(this);
-
-
+      this.handleScriptLoad = this.handleScriptLoad.bind(this);
+      this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
   }
 
   validateForm() {
-    return this.state.title.length > 0 && this.state.headline.length > 0 && this.state.description.length > 0 && this.state.startDate && this.state.endDate;
+    return this.state.title.length > 0 && this.state.headline.length > 0 && this.state.description.length > 0 && this.state.query.length > 0 && this.state.startDate && this.state.endDate;
   }
 
   handleStartDateChange(date) {
@@ -54,12 +57,14 @@ export default class CreateConvention extends Component {
     this.setState({ isLoading: true });
   
     try {  
+      console.log(this.state.query)
       await this.createNote({
         title: this.state.title,
         headline: this.state.headline,
         description: this.state.description,
         startDate: this.state.startDate,
-        endDate: this.state.endDate
+        endDate: this.state.endDate,
+        eventLocation: this.state.query
       });
       await this.setState({
         isSuccessful: true
@@ -79,10 +84,46 @@ export default class CreateConvention extends Component {
     });
   }
 
+  handleScriptLoad() { 
+    // Declare Options For Autocomplete 
+    var options = { types: [`(cities)`] }; 
+    
+    // Initialize Google Autocomplete 
+    /*global google*/
+    this.autocomplete = new google.maps.places.Autocomplete(
+                          document.getElementById(`query`),
+                          options ); 
+    // Fire Event when a suggested name is selected
+    this.autocomplete.addListener(`place_changed`,
+                                  this.handlePlaceSelect); 
+  }
+
+  handlePlaceSelect() {
+
+    // Extract City From Address Object
+    let addressObject = this.autocomplete.getPlace();
+    let address = addressObject.address_components;
+
+    // Check if address is valid
+    if (address) {
+      // Set State
+      this.setState(
+        {
+          city: address[0].long_name,
+          query: addressObject.formatted_address,
+        }
+      );
+    }
+  }
+
   render() {
     return (
       <div className="Create-Convention">
+      <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdtmzsWcW2cs3bRTm2CNdNyVjfj0wEqmg&libraries=places"          
+        onLoad={this.handleScriptLoad}        
+      />  
         <Form>
+          <Form.Label style={{marginLeft:'auto',marginRight:'auto'}}>Basic Convention Information</Form.Label>
           <Form.Group controlId="title">
             <Form.Label>Name of the Convention</Form.Label>
             <Form.Control 
@@ -115,6 +156,17 @@ export default class CreateConvention extends Component {
              />
             <Form.Text className="text-muted">
               Describe your convention.
+            </Form.Text>
+          </Form.Group>
+          <Form.Group controlId="query">
+            <Form.Label>Convention Location</Form.Label>
+            <Form.Control 
+              placeholder="Enter City and State"
+              onChange={this.handleChange}
+              value={this.state.query}
+              />
+            <Form.Text className="text-muted">
+              Your convention's location. 
             </Form.Text>
           </Form.Group>
           <div className="date-picker">

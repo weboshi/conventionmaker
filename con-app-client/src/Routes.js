@@ -15,6 +15,7 @@ import EditBasic from "./Containers/EditBasic";
 import Convention from "./Containers/Convention";
 import EditFaq from "./Containers/EditFaq";
 import EditLanding from "./Containers/EditLanding";
+import EditEvents from "./Containers/EditEvents";
 
 
 export default ({ childProps }) =>
@@ -30,6 +31,7 @@ export default ({ childProps }) =>
     <AuthenticatedRoute path="/convention/:id" exact component={Convention} props={childProps} />
     <AuthenticatedRoute path="/convention/edit/faq/:id" exact component={EditFaq} props={childProps} />
     <AuthenticatedRoute path="/convention/edit/landing/:id" exact component={EditLanding} props={childProps} />
+    <AuthenticatedRoute path="/convention/edit/events/:id" exact component={EditEvents} props={childProps} />
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFound} />
   </Switch>

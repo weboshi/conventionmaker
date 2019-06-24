@@ -3,6 +3,8 @@ import { Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { API, Storage } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
+import { AlertComponent } from '../components/AlertComponent';
+import Script from 'react-load-script';
 import { Auth } from "aws-amplify";
 import "./EditBasic.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,24 +35,36 @@ export default class CreateConvention extends Component {
         title: '',
         headline: '',
         description: '',
+        city: '',
+        query: '',
       };
       this.handleStartDateChange = this.handleStartDateChange.bind(this);
       this.handleEndDateChange = this.handleEndDateChange.bind(this);
       this.renderForm = this.renderForm.bind(this);
       this.handleEdit = this.handleEdit.bind(this);
       this.handleCancel = this.handleCancel.bind(this);
+      this.handleDismiss = () => { 
+        this.setState({ showAlert: false, });
+      }
+      this.handleScriptLoad = this.handleScriptLoad.bind(this);
+      this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
+      this.editLocation = () => {
+        this.setState({ editing: 'query'});
+      }
   }
 
   componentDidMount = async () => {
     try {
       const convention = await this.getConvention();
-      const { title, headline, description, startDate, endDate } = convention;
-      console.log(startDate)
+      const { title, headline, description, eventLocation, startDate, endDate } = convention;
+      console.log(convention)
 
       this.setState({
+        convention,
         title,
         headline,
         description,
+        query: eventLocation,
         startDate: new Date(startDate),
         endDate: new Date(endDate)
       })
@@ -72,10 +86,21 @@ export default class CreateConvention extends Component {
         startDate: this.state.startDate,
         endDate: this.state.endDate
       })
-      window.location.reload()
+      this.setState({
+        success: 1,
+        successAlert: "Successfully updated.",
+        showAlert: 1,
+        isLoading: false,
+      })
     }
     catch(e) {
       alert(e)
+      this.setState({
+        success : 0,
+        successAlert: e,
+        showAlert: 1,
+        isLoading: false,
+      })
     }
   }
 
@@ -90,7 +115,11 @@ export default class CreateConvention extends Component {
   }
 
   validateForm() {
-    return this.state.title.length > 0 && this.state.headline.length > 0 && this.state.description.length > 0 && this.state.startDate && this.state.endDate;
+    return (this.state.title.length > 0 && (this.state.title !== this.state.convention.title)) ||
+      (this.state.description.length > 0 && (this.state.description !== this.state.convention.description)) ||
+      (this.state.headline.length > 0 && (this.state.headline !== this.state.convention.headline)) ||
+      (this.state.startDate && (this.state.startDate !== this.state.convention.startDate)) ||
+      (this.state.endDate && (this.state.endDate !== this.state.convention.endDate))
   }
 
   handleStartDateChange(date) {
@@ -123,10 +152,45 @@ export default class CreateConvention extends Component {
       })
   }
 
+  handleScriptLoad() { 
+    // Declare Options For Autocomplete 
+    var options = { types: [`(cities)`] }; 
+    
+    // Initialize Google Autocomplete 
+    /*global google*/
+    this.autocomplete = new google.maps.places.Autocomplete(
+                          document.getElementById(`query`),
+                          options ); 
+    // Fire Event when a suggested name is selected
+    this.autocomplete.addListener(`place_changed`,
+                                  this.handlePlaceSelect); 
+  }
+
+  handlePlaceSelect() {
+
+    // Extract City From Address Object
+    let addressObject = this.autocomplete.getPlace();
+    let address = addressObject.address_components;
+
+    // Check if address is valid
+    if (address) {
+      // Set State
+      this.setState(
+        {
+          city: address[0].long_name,
+          query: addressObject.formatted_address,
+        }
+      );
+    }
+  }
+
   renderForm = () => {
     let currentEdit = this.state.editing
     return (
         <Form>
+          <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdtmzsWcW2cs3bRTm2CNdNyVjfj0wEqmg&libraries=places"          
+          onLoad={this.handleScriptLoad}        
+        />
         {/* Name */}
         {(currentEdit === "title") ?
         <Form.Group controlId="title">
@@ -185,8 +249,6 @@ export default class CreateConvention extends Component {
         <Form.Control 
             as="textarea" 
             placeholder="Enter description" 
-            readOnly 
-            placeholder="Enter description" 
             value={this.state.description}
             onChange={this.handleChange}/>
         <Form.Text className="text-muted">
@@ -200,15 +262,44 @@ export default class CreateConvention extends Component {
         readOnly 
         as="textarea" 
         placeholder="Enter description" 
-        placeholder="Enter description" 
         value={this.state.description}
         onChange={this.handleChange}/>
       <Form.Text className="text-muted">
         Describe your convention.
       </Form.Text>
     </Form.Group>)}
+    {(currentEdit === "query") ?
+    (
+      <Form.Group controlId="query">
+      <Form.Label>Convention Location <CancelFormButton onClick={this.handleCancel}/></Form.Label>
+      <Form.Control 
+        placeholder="Enter City and State"
+        onChange={this.handleChange}
+        value={this.state.query}
+        />
+      <Form.Text className="text-muted">
+        Your convention's location. 
+      </Form.Text>
+    </Form.Group>
+    )
+    :
+    (
+      <Form.Group controlId="query">
+      <Form.Label>Convention Location <EditFormButton onClick={this.editLocation}/></Form.Label>
+      <Form.Control
+        readOnly
+        placeholder="Enter City and State"
+        onChange={this.handleChange}
+        value={this.state.query}
+        />
+      <Form.Text className="text-muted">
+        Your convention's location. 
+      </Form.Text>
+    </Form.Group>
+    )}
     {(currentEdit === "date") ?
       (<Form.Group>
+        <Form.Label>Convention Date <CancelFormButton id='date' onClick={this.handleCancel}/></Form.Label>
         <div className="date-picker">
         Start Date 
         <DatePicker
@@ -249,7 +340,7 @@ export default class CreateConvention extends Component {
             type="submit"
             isLoading={this.state.isLoading}
             text="Submit Changes"
-            loadingText="Creating…"
+            loadingText="Updating…"
             onClick={this.handleSubmit}
         />
     </Form>
@@ -259,7 +350,18 @@ export default class CreateConvention extends Component {
   render() {
     return (
       <div className="Edit-Convention-Basic">
+        <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdtmzsWcW2cs3bRTm2CNdNyVjfj0wEqmg&libraries=places"          
+          onLoad={this.handleScriptLoad}        
+        />
             <h2 style={{textAlign:'center'}}>Basic Details</h2>
+            <div className="alert-section">
+            <AlertComponent  
+              success={this.state.success} 
+              successAlert={this.state.successAlert} 
+              handleDismiss={this.handleDismiss} 
+              show={this.state.showAlert}>
+            </AlertComponent>
+            </div>
             {this.renderForm()}
       </div>
     );

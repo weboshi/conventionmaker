@@ -5,6 +5,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import DatePicker from "react-datepicker";
 import LoaderButton from "../components/LoaderButton";
 import { ModalComponent } from "../components/Modal";
+import { AlertComponent } from "../components/AlertComponent";
 import config from "../config";
 import { API } from "aws-amplify";
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -14,31 +15,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 var AWS = require("aws-sdk");
 
-const AlertComponent = (props) => {
-  if (props.success === 1) {
-    return (
-      <Alert show={props.show} variant="success" onClose={props.handleDismiss} dismissible>
-          <p className="alert-p">
-            {props.successAlert}
-          </p>
-      </Alert>
-    )
-  }
-  
-  else if (props.success === 0) {
-    return (
-      <Alert show={props.show} variant="danger" onClose={props.handleDismiss} dismissible>
-          <p className="alert-p">
-            {props.errorAlert}
-          </p>
-      </Alert>
-    )
-  }
-
-  else {
-    return null
-  }
-}
 
 export default class CreateConvention extends Component {
   constructor(props) {
@@ -84,7 +60,8 @@ export default class CreateConvention extends Component {
           const { faq, title, headline, description, startDate, endDate } = convention;
           console.log(convention)
           console.log(faq)
-          this.setState({
+          if(faq){
+            this.setState({
               faq: faq,
               title: title,
               headline: headline,
@@ -92,6 +69,17 @@ export default class CreateConvention extends Component {
               startDate: startDate,
               endDate: endDate
           })
+          }
+          else {
+            this.setState({
+              faq: null,
+              title: title,
+              headline: headline,
+              description: description,
+              startDate: startDate,
+              endDate: endDate
+          })
+          }
       }
       catch(e){
           alert(e)
@@ -128,8 +116,9 @@ export default class CreateConvention extends Component {
             endDate: this.state.endDate,
             faq: this.state.newFaq
           })
-          console.log('hm')
-          console.log(this.state.newFaq)
+        this.setState({
+          faq: this.state.newFaq
+        })
     }
     else {
         await this.updateConvention({
@@ -174,9 +163,7 @@ export default class CreateConvention extends Component {
             question: this.state.question,
             answer: this.state.answer,
         }
-        console.log(newQuestion)
         faq.push(newQuestion)
-        console.log(faq)
         this.setState({
             newFaq: faq
         }, () => console.log(this.state.newFaq))
@@ -385,12 +372,12 @@ export default class CreateConvention extends Component {
   faqPanel = () => {
       const faq = this.state.faq
       console.log(faq)
-    if(faq === null) {
+    if(faq === null || faq.length === 0) {
         return (
             <div>
-                No questions.
                 <div className="faq-control"><Button id={"show"} onClick={this.createQuestion}><i className="fas fa-plus-circle"></i> Add Question</Button></div>
                 {this.state.createQuestion && this.newQuestion()}
+                No FAQ questions. Add a few to help out attendees.
             </div>
         )
     }
@@ -412,7 +399,14 @@ export default class CreateConvention extends Component {
         <div className="section-header">
           <h3>FAQ Section</h3>
         </div>
-        <AlertComponent success={this.state.success} successAlert={this.state.successAlert} handleDismiss={this.handleDismiss} alert={this.state.alert} show={this.state.showAlert}/>
+        <div className="alert-section">
+        <AlertComponent 
+          success={this.state.success} 
+          successAlert={this.state.successAlert} 
+          handleDismiss={this.handleDismiss} 
+          alert={this.state.alert} 
+          show={this.state.showAlert}/>
+        </div>
         <div className="faq-panel">{this.state.faq === undefined ? '' : this.faqPanel()}</div>
         <ModalComponent 
           id={"showDelete"} 

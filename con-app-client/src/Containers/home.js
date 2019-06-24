@@ -51,9 +51,9 @@ export default class Home extends Component {
               to="/convention/new"
             >
               <ListGroup.Item action>
-                <h4>
+                <h5>
                   <b>{"\uFF0B"}</b> Create a new Convention
-                </h4>
+                </h5>
               </ListGroup.Item>
             </LinkContainer>
     );
@@ -71,7 +71,7 @@ export default class Home extends Component {
   renderNotes() {
     return (
       <div className="notes">
-        <h1>Your Conventions</h1>
+        <h3>Your Conventions</h3>
         <ListGroup>
           {!this.state.isLoading && this.renderNotesList(this.state.notes)}
         </ListGroup>

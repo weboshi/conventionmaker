@@ -81,7 +81,61 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
-
+  update-basic:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.basic
+    events:
+      - http:
+          path: conventions/updateBasic/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  update-events:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.events
+    events:
+      - http:
+          path: conventions/updateEvents/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  update-faq:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.faq
+    events:
+      - http:
+          path: conventions/updateFaq/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  update-landing:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.landing
+    events:
+      - http:
+          path: conventions/updateLanding/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  update-schedule:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.schedule
+    events:
+      - http:
+          path: conventions/updateSchedule/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
   delete:
       # Defines an HTTP API endpoint that calls the main function in delete.js
       # - path: url path is /notes/{id}

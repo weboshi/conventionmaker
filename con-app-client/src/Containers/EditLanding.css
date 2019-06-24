@@ -1,0 +1,20 @@
+.form-panel {
+    border: 2px solid rgb(211, 211, 211);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+    width: 60%;
+
+}
+
+.form-panel-container {
+    display: flex;
+    justify-content: center;
+}
+
+.form-panel-label {
+    text-align: center;
+    margin-bottom: 15px;
+}

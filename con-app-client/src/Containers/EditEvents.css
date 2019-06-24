@@ -1,0 +1,14 @@
+.event-image {
+    margin-left: auto;
+    margin-right: auto;
+    width: 30rem;
+}
+
+.event-image img {
+    height: auto;
+    width: 100%;
+}
+
+.alert-section {
+    height: 60px;
+}

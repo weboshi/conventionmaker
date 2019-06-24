@@ -153,7 +153,7 @@ export default class Notes extends Component {
                    <Link to="/convention/edit/basic">Schedule</Link> lets you create your convention's schedule with time, duration and location.
                </div>
                <div className='Edit-Convention Options'>
-                   <Link to="/convention/edit/basic">Events</Link> is where you can create your pages for your convention's events.
+                   <Link to={`/convention/edit/events/${this.state.conId}`}>Events</Link> is where you can create your pages for your convention's events.
                </div>
                <div className='Edit-Convention Options'>
                    <Link to={`/convention/edit/landing/${this.state.conId}`}>Landing</Link> is what users will first see when visiting your convention page. Use this to advertise what makes your convention special.

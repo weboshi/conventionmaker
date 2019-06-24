@@ -14,8 +14,15 @@ export async function main(event, context) {
       title: data.title,
       headline: data.headline,
       description: data.description,
+      eventLocation: data.eventLocation,
       startDate: data.startDate,
-      endDate: data.endDate
+      endDate: data.endDate,
+      faq: null,
+      events: null,
+      header: null,
+      blurb: null,
+      banner: null,
+      schedule: null,
     }
   };
 

@@ -1,7 +1,7 @@
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
 
-export async function main(event, context) {
+export async function schedule(event, context) {
   const data = JSON.parse(event.body);
   const params = {
     TableName: "conventions",
@@ -14,14 +14,9 @@ export async function main(event, context) {
     },
     // 'UpdateExpression' defines the attributes to be updated
     // 'ExpressionAttributeValues' defines the value in the update expression
-    UpdateExpression: "SET title = :title, description = :description, headline = :headline, startDate = :startDate, endDate = :endDate, faq = :faq",
+    UpdateExpression: "SET schedule = :schedule",
     ExpressionAttributeValues: {
-      ":description": data.description || null,
-      ":headline": data.headline || null,
-      ":title": data.title || null,
-      ":startDate": data.startDate || null,
-      ":endDate": data.endDate || null,
-      ":faq": data.faq || null,
+      ":schedule": data.schedule || null,
     },
     // 'ReturnValues' specifies if and how to return the item's attributes,
     // where ALL_NEW returns all attributes of the item after the update; you
