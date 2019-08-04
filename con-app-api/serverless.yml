@@ -136,6 +136,28 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
+  update-guests:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.guests
+    events:
+      - http:
+          path: conventions/updateGuests/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  update-links:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.links
+    events:
+      - http:
+          path: conventions/updateLinks/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
   delete:
       # Defines an HTTP API endpoint that calls the main function in delete.js
       # - path: url path is /notes/{id}

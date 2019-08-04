@@ -25,7 +25,6 @@
 
 .Edit-Convention-Basic {
     margin-top: 20px;
-    max-width: 700px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 3rem;
@@ -35,4 +34,22 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+.dashboard-container-basic {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filler {
+    width: 15rem;
+}
+
+.mainContainer {
+    width: 60%;
+}
+
+.breadcrumb {
+    margin-left: 1rem;
+    margin-bottom: 0 !important;
 }

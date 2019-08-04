@@ -1,0 +1,35 @@
+
+.button-panel {
+    text-align: left;
+}
+
+.button-panel > button {
+    margin-left: .2rem;
+    margin-bottom: .2rem;
+    margin-right: 0;
+}
+
+.button-panel:first-child {
+    margin-left: 1rem;
+}
+
+.Loading {
+    margin-top: 3rem;
+    font-size: 3rem;
+}
+
+.preview-schedule { 
+    margin-top: 1.5rem;
+}
+
+.section-label {
+    text-align: center;
+}
+
+.faq-panel .card {
+    margin-bottom: 2rem !important;
+}
+
+.loading-icon {
+    text-align: center;
+}

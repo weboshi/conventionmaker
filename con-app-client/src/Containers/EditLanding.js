@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { Dashboard } from "../components/Dashboard";
 import LoaderButton from "../components/LoaderButton";
 import { Alert, AlertComponent } from "../components/AlertComponent";
 import config from "../config";
@@ -55,17 +57,13 @@ export default class EditLanding extends Component {
       console.log(convention)
       const { 
         title,
-        headline,
-        description,
-        startDate,
-        endDate,
+        conId,
         banner,
         blurb,
         header,
-        faq,
        } = convention;
 
-      if (banner) {
+      if(banner) {
         bannerURL = await Storage.vault.get(banner);
         console.log(bannerURL)
       }
@@ -74,31 +72,22 @@ export default class EditLanding extends Component {
         this.setState({
           convention,
           title,
-          headline,
-          description,
-          startDate,
-          endDate,
           bannerURL,
           header,
           blurb,
           banner,
-          faq
+          conId
         });
       }
       else {
-        console.log("Smoop")
         this.setState({
+          conId,
           convention,
           title,
-          headline,
-          description,
-          startDate,
-          endDate,
           banner,
           bannerURL,
           header: '',
           blurb: '',
-          faq
         });
       }
 
@@ -107,64 +96,64 @@ export default class EditLanding extends Component {
     }
   }
 
-  async componentDidMount() {
-    try {
-      let bannerURL;
-      const convention = await this.getConvention();
-      console.log(convention)
-      const { 
-        title,
-        headline,
-        description,
-        startDate,
-        endDate,
-        banner,
-        blurb,
-        header,
-        faq,
-       } = convention;
+  // async componentDidMount() {
+  //   try {
+  //     let bannerURL;
+  //     const convention = await this.getConvention();
+  //     console.log(convention)
+  //     const { 
+  //       title,
+  //       headline,
+  //       description,
+  //       startDate,
+  //       endDate,
+  //       banner,
+  //       blurb,
+  //       header,
+  //       faq,
+  //      } = convention;
 
-      if (banner) {
-        bannerURL = await Storage.vault.get(banner);
-        console.log(bannerURL)
-      }
+  //     if (banner) {
+  //       bannerURL = await Storage.vault.get(banner);
+  //       console.log(bannerURL)
+  //     }
 
-      if(header) {
-        this.setState({
-          convention,
-          title,
-          headline,
-          description,
-          startDate,
-          endDate,
-          bannerURL,
-          header,
-          blurb,
-          banner,
-          faq
-        });
-      }
-      else {
-        console.log("Smoop")
-        this.setState({
-          convention,
-          title,
-          headline,
-          description,
-          startDate,
-          endDate,
-          banner,
-          bannerURL,
-          header: '',
-          blurb: '',
-          faq
-        });
-      }
+  //     if(header) {
+  //       this.setState({
+  //         convention,
+  //         title,
+  //         headline,
+  //         description,
+  //         startDate,
+  //         endDate,
+  //         bannerURL,
+  //         header,
+  //         blurb,
+  //         banner,
+  //         faq
+  //       });
+  //     }
+  //     else {
+  //       console.log("Smoop")
+  //       this.setState({
+  //         convention,
+  //         title,
+  //         headline,
+  //         description,
+  //         startDate,
+  //         endDate,
+  //         banner,
+  //         bannerURL,
+  //         header: '',
+  //         blurb: '',
+  //         faq
+  //       });
+  //     }
 
-    } catch (e) {
-      alert(e);
-    }
-  }
+  //   } catch (e) {
+  //     alert(e);
+  //   }
+  // }
 
   getConvention() {
     return API.get("conventions", `/conventions/${this.props.match.params.id}`);
@@ -181,7 +170,7 @@ export default class EditLanding extends Component {
   }
 
   updateConvention = (convention) => {
-    return API.put("conventions", `/conventions/${this.props.match.params.id}`, {
+    return API.put("conventions", `/conventions/updateLanding/${this.props.match.params.id}`, {
       body: convention
     })
   }
@@ -426,19 +415,29 @@ export default class EditLanding extends Component {
 
   render() {
     return (
-      <div className="Create-Convention">
-        <div className="section-header">
-          <h3>Edit Landing Page</h3>
-        </div>
-        <div className="alert-section">
-          <AlertComponent  
-            success={this.state.success} 
-            successAlert={this.state.successAlert} 
-            handleDismiss={this.handleDismiss} 
-            show={this.state.showAlert}>
-          </AlertComponent>
-        </div>
-        <div className='form-panel-container'>
+      <div className="Edit-Convention-Basic">
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item href={`/convention/${this.state.conId}`}>
+            Dashboard
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>Landing</Breadcrumb.Item>
+        </Breadcrumb>
+        <div className="dashboard-container-basic">
+          <Dashboard conId={this.state.conId}/>
+          <div className="mainContainer">
+            <div className="section-header">
+              <h3>Edit Landing Page</h3>
+            </div>
+            <div className="alert-section">
+            <AlertComponent  
+              success={this.state.success} 
+              successAlert={this.state.successAlert} 
+              handleDismiss={this.handleDismiss} 
+              show={this.state.showAlert}>
+            </AlertComponent>
+          </div>
+          <div className='form-panel-container'>
           <div className="form-panel">
           <div className="form-panel-label">
             <h4>Landing Banner</h4>
@@ -472,6 +471,10 @@ export default class EditLanding extends Component {
             <h4>Landing Header and Blurb</h4>
           </div>
           {(this.state.convention !== null) ? this.renderForm() : this.renderFirstForm()}
+        </div>
+        </div>
+        </div>
+        <div className="filler">
         </div>
         </div>
       </div>

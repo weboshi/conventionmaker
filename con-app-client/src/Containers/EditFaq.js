@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, Card } from "react-bootstrap";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { Dashboard } from "../components/Dashboard";
 import Alert from 'react-bootstrap/Alert'
 import Accordion from 'react-bootstrap/Accordion'
 import DatePicker from "react-datepicker";
@@ -33,7 +35,8 @@ export default class CreateConvention extends Component {
       this.handleChange = this.handleChange.bind(this);
 
       this.handleShow = (e) => {
-        this.setState({ [e.target.id]: true });
+        this.setState({ [e.target.id]: true,
+        isSuccessful: false });
       };
   
       this.handleHide = () => {
@@ -57,27 +60,21 @@ export default class CreateConvention extends Component {
   componentDidMount = async () => {
       try {
           const convention = await this.getConvention();
-          const { faq, title, headline, description, startDate, endDate } = convention;
+          const { faq, title, conId } = convention;
           console.log(convention)
           console.log(faq)
           if(faq){
             this.setState({
               faq: faq,
               title: title,
-              headline: headline,
-              description: description,
-              startDate: startDate,
-              endDate: endDate
+              conId: conId
           })
           }
           else {
             this.setState({
               faq: null,
               title: title,
-              headline: headline,
-              description: description,
-              startDate: startDate,
-              endDate: endDate
+              conId: conId
           })
           }
       }
@@ -103,18 +100,14 @@ export default class CreateConvention extends Component {
   handleSubmit = async event => {
     event.preventDefault();
   
-    this.setState({ isLoading: true });
+    this.setState({ 
+      isLoading: true });
 
     try {
     await this.saveQuestion()
     if(this.state.newFaq){
         await this.updateConvention({
-            title: this.state.title,
-            description: this.state.description,
-            headline: this.state.headline,
-            startDate: this.state.startDate,
-            endDate: this.state.endDate,
-            faq: this.state.newFaq
+          faq: this.state.newFaq
           })
         this.setState({
           faq: this.state.newFaq
@@ -122,23 +115,16 @@ export default class CreateConvention extends Component {
     }
     else {
         await this.updateConvention({
-            title: this.state.title,
-            description: this.state.description,
-            headline: this.state.headline,
-            startDate: this.state.startDate,
-            endDate: this.state.endDate,
             faq: this.state.faq
           })
-          console.log('moop')
           console.log(this.state.newFaq)
-
     }
 
       this.setState({
-        isSuccessful: 1,
-        showAlert: 1,
+        isSuccessful: true,
+        showAlert: true,
         successAlert: "Question successfully created.",
-        success: 1,
+        success: true,
       })
 
       setTimeout(() => {
@@ -146,7 +132,6 @@ export default class CreateConvention extends Component {
           show: false,
           question: '',
           answer: '',
-          isSuccessful: 0,
         })
       }, 500);
 
@@ -184,7 +169,7 @@ export default class CreateConvention extends Component {
 
   
   updateConvention = (convention) => {
-    return API.put("conventions", `/conventions/${this.props.match.params.id}`, {
+    return API.put("conventions", `/conventions/updateFaq/${this.props.match.params.id}`, {
       body: convention
     })
   }
@@ -222,11 +207,6 @@ export default class CreateConvention extends Component {
 
     try {
       await this.updateConvention({
-        title: this.state.title,
-        description: this.state.description,
-        headline: this.state.headline,
-        startDate: this.state.startDate,
-        endDate: this.state.endDate,
         faq: this.state.faq
       })
 
@@ -261,11 +241,6 @@ export default class CreateConvention extends Component {
 
     try {
       await this.updateConvention({
-        title: this.state.title,
-        description: this.state.description,
-        headline: this.state.headline,
-        startDate: this.state.startDate,
-        endDate: this.state.endDate,
         faq: faq
       })
 
@@ -304,19 +279,18 @@ export default class CreateConvention extends Component {
   mapFaq = (faq) => {
       return faq.map((question, i) =>
       i === this.state.editQuestion ? 
-      <Card className="text-center">
+      <Card>
       <Card.Header>
         <div className="faq-header">
         <div className="faq-header-section"></div>
         <div className="faq-header-section">Question {(i+1)}</div>
         <div className="faq-header-section editOptions">
-          <i onClick={this.saveEdit} className="far fa-save editIcon"></i> 
-          <i onClick={this.cancelEdit} className="far fa-window-close editIcon redIcon"></i>
+          <i title="Click to save" onClick={this.saveEdit} className="far fa-save editIcon"></i> 
+          <i title="Cancel edit" onClick={this.cancelEdit} className="far fa-window-close editIcon redIcon"></i>
           </div>
         </div>
       </Card.Header>
       <Card.Body>
-        <Card.Title>
         <div className="order-edit">
         <Form.Group controlId="exampleForm.ControlSelect1">
           <Form.Label>Order</Form.Label>
@@ -326,29 +300,35 @@ export default class CreateConvention extends Component {
           </Form.Control>
         </Form.Group>
         </div>
-          <Form.Group controlId="questionEdit">
-              <Form.Control
-                style={{textAlign:"center"}} 
-                placeholder="Enter question"
-                onChange={this.handleChange}
-                value={this.state.questionEdit}
-              />
-          </Form.Group>
-        </Card.Title>
-        <Card.Text>
-          <Form.Group controlId="answerEdit">
-            <Form.Control 
-              style={{textAlign:"center"}} 
-              placeholder="Enter answer"
-              onChange={this.handleChange}
-              value={this.state.answerEdit}
-            />
-          </Form.Group>
-        </Card.Text>
+        <Card.Body>
+        <Form.Group controlId="questionEdit">
+        <Form.Label>Question</Form.Label>
+          <Form.Control
+            placeholder="Enter question"
+            onChange={this.handleChange}
+            value={this.state.questionEdit}
+          />
+          <Form.Text className="text-muted">
+            The frequently asked question.
+          </Form.Text>
+        </Form.Group>
+        <Form.Group controlId="answerEdit">
+        <Form.Label>Answer</Form.Label>
+          <Form.Control
+            placeholder="Enter answer"
+            onChange={this.handleChange}
+            value={this.state.answerEdit}
+          />
+          <Form.Text className="text-muted">
+            The frequently asked question's answer.
+          </Form.Text>
+        </Form.Group>
+        </Card.Body>
+
       </Card.Body>
       </Card>
       :
-      <Card className="text-center" key={i}>
+      <Card key={i}>
       <Card.Header>
         <div className="header-faq">
           <div className="faq-header-section"></div>
@@ -360,34 +340,62 @@ export default class CreateConvention extends Component {
         </div>
         </Card.Header>
       <Card.Body>
-        <Card.Title>{question.question}</Card.Title>
-        <Card.Text>
-          {question.answer}
-        </Card.Text>
-      </Card.Body>
+        <Form.Group controlId="question">
+        <Form.Label>Question</Form.Label>
+          <Form.Control
+            readOnly 
+            placeholder="Enter question"
+            onChange={this.handleChange}
+            value={question.question}
+          />
+          <Form.Text className="text-muted">
+            The frequently asked question.
+          </Form.Text>
+        </Form.Group>
+        <Form.Group controlId="answer">
+        <Form.Label>Answer</Form.Label>
+          <Form.Control
+            readOnly 
+            placeholder="Enter answer"
+            onChange={this.handleChange}
+            value={question.answer}
+          />
+          <Form.Text className="text-muted">
+            The frequently asked question's answer.
+          </Form.Text>
+        </Form.Group>
+        </Card.Body>
       </Card>
     )
   }
 
   faqPanel = () => {
       const faq = this.state.faq
-      console.log(faq)
-    if(faq === null || faq.length === 0) {
+    if(faq === undefined) {
+        return (
+          <div>
+            {this.state.createQuestion && this.newQuestion()}
+            <div className="loading-icon">
+              <i className="fas fa-circle-notch fa-spin Loading"></i>
+            </div>
+          </div>
+        )
+    }
+    else if(faq === null || faq.length === 0) {
         return (
             <div>
-                <div className="faq-control"><Button id={"show"} onClick={this.createQuestion}><i className="fas fa-plus-circle"></i> Add Question</Button></div>
                 {this.state.createQuestion && this.newQuestion()}
-                No FAQ questions. Add a few to help out attendees.
+                <div className="loading-icon">
+                  No FAQ questions. Add a few to help out attendees.
+                </div>
             </div>
         )
     }
     else {
         return (
             <div>
-                <div className="faq-control"><Button id={"show"} onClick={this.createQuestion}><i className="fas fa-plus-circle"></i> Add Question</Button></div>
                 {this.state.createQuestion && this.newQuestion()}
                 {this.mapFaq(this.state.faq)}
-                
             </div>
         )
     }
@@ -395,19 +403,36 @@ export default class CreateConvention extends Component {
 
   render() {
     return (
-      <div className="Create-Convention">
-        <div className="section-header">
-          <h3>FAQ Section</h3>
+      <div className="Edit-Convention-Basic">
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item href={`/convention/${this.state.conId}`}>
+            Dashboard
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>F.A.Q.</Breadcrumb.Item>
+        </Breadcrumb>
+        <div className="dashboard-container-basic">
+          <Dashboard conId={this.state.conId}/>
+          <div className="mainContainer">
+            <div className="section-header">
+              <h3>FAQ Section</h3>
+            </div>
+            <div className="alert-section">
+            <AlertComponent 
+              success={this.state.success} 
+              successAlert={this.state.successAlert} 
+              handleDismiss={this.handleDismiss} 
+              alert={this.state.alert} 
+              show={this.state.showAlert}/>
+            </div>
+            <div className="faq-panel"><div className="faq-control">
+              <Button id={"show"} onClick={this.createQuestion}><i className="fas fa-plus-circle"></i> Add Question</Button>
+            </div>
+              {this.state.faq === undefined ? '' : this.faqPanel()}
+            </div>
+          </div>
+          <div className="filler"></div>
         </div>
-        <div className="alert-section">
-        <AlertComponent 
-          success={this.state.success} 
-          successAlert={this.state.successAlert} 
-          handleDismiss={this.handleDismiss} 
-          alert={this.state.alert} 
-          show={this.state.showAlert}/>
-        </div>
-        <div className="faq-panel">{this.state.faq === undefined ? '' : this.faqPanel()}</div>
         <ModalComponent 
           id={"showDelete"} 
           size={"sm"} 

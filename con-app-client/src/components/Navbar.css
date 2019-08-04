@@ -1,0 +1,22 @@
+.navbar-light {
+    transition: background-color .7s ease;
+}
+
+.preview-nav {
+    background-color: transparent !important;
+
+}
+
+.preview-nav a {
+    color: white !important;
+}
+
+
+.navbar--hidden {
+    background-color: black !important;
+}
+
+.preview-nav .navbar-brand {
+    font-family: 'Roboto', sans-serif;
+    font-size: 3rem;
+}

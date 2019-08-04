@@ -1,0 +1,56 @@
+.publish-check {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.precheck-section button {
+    margin-right: .5em;
+}
+
+.publish {
+    display: flex;
+    justify-content: center;
+}
+
+.publish p {
+    margin-bottom: 0;
+}
+
+.publish-middle {
+    display: flex;
+    justify-content: center;
+    text-align: left;
+}
+
+.precheck-section {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.publish-end {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.publish-button { 
+    border-radius: 5px;
+    border: 1px solid green;
+    width: 100%;
+    padding: 1rem;
+    background-color: #d4edda;
+}
+
+.publish-message {
+    color: green;
+
+}
+
+.flex-publish {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -1,0 +1,54 @@
+.date-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: bold;
+    text-align: center;
+    border-right: .5px solid rgb(196, 196, 196);
+    width: 5rem;
+}
+
+.information-panel {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    padding-left: 1.25rem;
+}
+
+.information-panel p:first-child {
+    margin-bottom: .5rem;
+    font-weight: bold;
+}
+
+.information-panel p {
+    margin: 0;
+}
+
+.page-header {
+    margin-top: 3rem;
+}
+
+.convention-panel {
+    display: flex;
+    justify-content: left;
+}
+
+.convention-list {
+    margin-top: 1rem;
+}
+
+.picture-panel {
+    background-size: cover;
+    width: 5rem;
+    height: 5rem;
+}
+
+.convention-list a {
+    padding:0;
+}
+.convention-list p {
+    margin: 0;
+}
+
+.list-group-item {
+    padding: 0 !important;
+}

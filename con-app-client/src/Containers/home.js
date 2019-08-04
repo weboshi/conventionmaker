@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ListGroup from 'react-bootstrap/ListGroup'
 import { LinkContainer } from "react-router-bootstrap";
 import { API } from "aws-amplify";
+import { Dashboard } from "../components/Dashboard";
 import "./home.css";
 
 export default class Home extends Component {
@@ -81,7 +82,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="Home">
+      <div className="Home container">
         {this.props.isAuthenticated ? this.renderNotes() : this.renderLander()}
       </div>
     );

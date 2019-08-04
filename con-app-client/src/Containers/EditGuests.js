@@ -18,15 +18,15 @@ import "react-datepicker/dist/react-datepicker.css";
 var AWS = require("aws-sdk");
 
 
-export default class EditEvents extends Component {
+export default class EditGuests extends Component {
   constructor(props) {
     super(props);
     this.state = {
         isSuccessful: false,
-        newEvent: {},
-        createEvent: '',
-        eventHeader: '',
-        eventBlurb: '',
+        newGuest: {},
+        createGuest: '',
+        guestName: '',
+        guestBlurb: '',
         show: false,
         showAlert: false,
         success: '',
@@ -62,13 +62,13 @@ export default class EditEvents extends Component {
   componentDidMount = async () => {
       try {
           const convention = await this.getConvention();
-          const { events, title, conId} = convention;
-          if (events){
-            const imageUrls = await this.getImageUrl(events);
+          const { guests, title, conId} = convention;
+          if (guests){
+            const imageUrls = await this.getImageUrl(guests);
             console.log(imageUrls)
             console.log('if events')
             this.setState({
-              events: events,
+              guests: guests,
               imageUrls: imageUrls,
               conId: conId,
               title: title
@@ -76,11 +76,11 @@ export default class EditEvents extends Component {
           }
           else {
             this.setState({
-              events: null,
+              guests: null,
               conId: conId,
               title: title,
           })
-          console.log(events)
+          console.log(guests)
           }
       }
       catch(e){
@@ -93,7 +93,7 @@ export default class EditEvents extends Component {
   }
 
   validateForm() {
-    return this.state.eventHeader.length> 0 && this.state.eventBlurb.length > 0;
+    return this.state.guestName.length> 0 && this.state.guestBlurb.length > 0;
   }
 
   handleChange = event => {
@@ -109,14 +109,14 @@ export default class EditEvents extends Component {
 
     try {
         await this.saveQuestion()
-        if (this.state.newEvents){
+        if (this.state.newGuests){
             await this.updateConvention({
-                events: this.state.newEvents
+                guests: this.state.newGuests
             })
         }
         else {
             await this.updateConvention({
-                events: this.state.events
+                guests: this.state.guests
             })
         }
     try {
@@ -129,17 +129,17 @@ export default class EditEvents extends Component {
     this.setState({
         isSuccessful: 1,
         showAlert: true,
-        successAlert: "Event successfully created.",
+        successAlert: "Guest successfully created.",
         success: true,
-        eventHeader: '',
-        eventBlurb: '',
+        guestName: '',
+        guestBlurb: '',
     })
 
       setTimeout(() => {
         this.setState({
           show: false,
-          eventHeader: '',
-          eventBlurb: '',
+          guestName: '',
+          guestBlurb: '',
         })
       }, 500);
 
@@ -150,7 +150,6 @@ export default class EditEvents extends Component {
   }
 
   saveQuestion = async () => {
-    console.log(this.state.imageUrls)
     let attachment
     try {
           attachment = this.file
@@ -162,130 +161,127 @@ export default class EditEvents extends Component {
         alert(e)
     }
 
-    if (this.state.events === null) {
-        const events = [];
-        const newEvent = {
-            eventHeader: this.state.eventHeader,
-            eventBlurb: this.state.eventBlurb,
-            eventImage: attachment
+    if (this.state.guests === null) {
+        const guests = [];
+        const newGuest = {
+            guestName: this.state.guestName,
+            guestBlurb: this.state.guestBlurb,
+            guestImage: attachment
         }
-        events.push(newEvent)
+        guests.push(newGuest)
         this.setState({
-            newEvents: events,
-            events: events
-        }, () => console.log(this.state.newEvents))
+            newGuests: guests,
+            guests: guests
+        }, () => console.log(this.state.newGuests))
     }
     else {
-        const events = this.state.events;
-        const newEvent = {
-            eventHeader: this.state.eventHeader, 
-            eventBlurb: this.state.eventBlurb,
-            eventImage: attachment,
+        const guests = this.state.guests;
+        const newGuest = {
+            guestName: this.state.guestName, 
+            guestBlurb: this.state.guestBlurb,
+            guestImage: attachment,
         }
-        events.push(newEvent)
+        guests.push(newGuest)
         this.setState({
-          events: events
+          guests: guests
         })
-        console.log(this.state.events)
-        console.log(this.state.imageUrls)
     }
 
   }
 
   
   updateConvention = (convention) => {
-    return API.put("conventions", `/conventions/updateEvents/${this.props.match.params.id}`, {
+    return API.put("conventions", `/conventions/updateGuests/${this.props.match.params.id}`, {
       body: convention
     })
   }
 
-  createEvent = (e) => {
+  createGuest = (e) => {
       this.handleShow(e)
   }
 
-  editEvent = (event, i) => {
+  editGuest = (guest, i) => {
     this.setState({
-      editEvent: i,
-      eventHeaderEdit: event.eventHeader,
-      eventBlurbEdit: event.eventBlurb
+      editGuest: i,
+      guestNameEdit: guest.guestName,
+      guestBlurbEdit: guest.guestBlurb
     })
   }
 
   cancelEdit = () => {
     this.setState({
-      editEventHeader: '',
-      editEventBlurb: '',
-      editEvent: '',
+      editGuestName: '',
+      editGuestBlurb: '',
+      editGuest: '',
     })
   }
 
   areDifferent = (param1, param2) => {
-      if((param1.eventHeader === param2.editEventHeader) && (param1.eventBlurb === param2.editEventHeader)){
+      if((param1.guestName === param2.editGuestName) && (param1.guestBlurb === param2.editGuestBlurb)){
           return 'noChange'
       }
-      else if ((param1.eventHeader !== param2.editEventHeader) && (param1.eventBlurb === param2.editEventHeader)){
+      else if ((param1.guestName !== param2.editGuestName) && (param1.guestBlurb === param2.editGuestBlurb)){
           return 'header'
       }
-      else if ((param1.eventHeader == param2.editEventHeader) && (param1.eventBlurb !== param2.editEventHeader)){
+      else if ((param1.guestName == param2.editGuestName) && (param1.guestBlurb !== param2.editGuestBlurb)){
         return 'blurb'
     }
   }
 
   saveEdit = async () => {
-    const index = this.state.editEvent
-    const events = this.state.events
-    const oldEvent = events[index]
-    let newEvent = { 
-        eventHeader: this.state.editEventHeader,
-        eventBlurb: this.state.editEventBlurb
+    const index = this.state.editGuest
+    const guests = this.state.guests
+    const oldGuest = guests[index]
+    let newGuest = { 
+        guestName: this.state.editGuestName,
+        guestBlurb: this.state.editGuestBlurb
     }
-    let event;
+    let guest;
     let attachment;
 
-    const diff = this.areDifferent(oldEvent, newEvent)
+    const diff = this.areDifferent(oldGuest, newGuest)
 
     try {
-
         if(this.file){
             attachment = await s3Upload(this.file);
             switch(diff){
                 case 'noChange':
-                oldEvent.eventImage = attachment
-                event = oldEvent
+                oldGuest.guestImage = attachment
+                guest = oldGuest
                 case 'header':
-                event = {
-                    eventHeader: this.state.editEventHeader,
-                    eventBlurb: oldEvent.eventBlurb,
-                    eventImage: attachment
+                guest = {
+                    guestName: this.state.editGuestName,
+                    guestBlurb: oldGuest.guestBlurb,
+                    guestImage: attachment
                 }
                 case 'blurb':
-                event = {
-                    eventHeader: oldEvent.eventHeader,
-                    eventBlurb: this.state.editEventBlurb,
-                    eventImage: attachment
+                guest = {
+                    guestName: oldGuest.guestName,
+                    guestBlurb: this.state.editGuestBlurb,
+                    guestImage: attachment
                 }
                 default:
-                oldEvent.eventImage = attachment
-                event = oldEvent
+                oldGuest.guestImage = attachment
+                guest = oldGuest
 
             }
         }
         else {
             switch(diff){
                 case 'noChange':
-                event = oldEvent
+                guest = oldGuest
                 case 'header':
-                event = {
-                    eventHeader: this.state.editEventHeader,
-                    eventBlurb: oldEvent.eventBlurb,
+                guest = {
+                    guestName: this.state.editGuestName,
+                    guestBlurb: oldGuest.guestBlurb,
                 }
                 case 'blurb':
-                event = {
-                    eventHeader: oldEvent.eventHeader,
-                    eventBlurb: this.state.editEventBlurb,
+                guest = {
+                    guestName: oldGuest.guestName,
+                    guestBlurb: this.state.editGuestBlurb     
                 }
                 default:
-                event = oldEvent
+                guest = oldGuest
 
             }  
         }
@@ -295,21 +291,21 @@ export default class EditEvents extends Component {
         alert(e)
     }
 
-    console.log(event)
-    events[index] = event
+    console.log(guest)
+    guests[index] = guest
 
     try {
       await this.updateConvention({
-        events: events
+        guests: guests,
       })
 
       this.setState({
-        editEventHeader: '',
-        editEventBlurb: '',
-        editEvent: '',
-        eventHeaderEdit: '',
-        eventBlurbEdit: '',
-        successAlert: "Event successfully edited!"
+        editGuestName: '',
+        editGuestBlurb: '',
+        editGuest: '',
+        guestNameEdit: '',
+        guestBlurbEdit: '',
+        successAlert: "Guest successfully edited!"
       })
     }
     catch(e) {
@@ -320,7 +316,7 @@ export default class EditEvents extends Component {
   askToDelete = (i) => {
     this.handleDeleteShow();
     this.setState({
-      deleteEvent: i,
+      deleteGuest: i,
     })
   }
 
@@ -328,23 +324,23 @@ export default class EditEvents extends Component {
     this.handleDeleteHide()
   }
 
-  deleteEvent = async () => {
-    const events = this.state.events
-    const index = this.state.deleteEvent
-    events.splice(index, 1)
+  deleteGuest = async () => {
+    const guests = this.state.guests
+    const index = this.state.deleteGuest
+    guests.splice(index, 1)
 
     try {
       await this.updateConvention({
-        events: events
+        guests: guests
       })
 
       this.setState({
-        deleteEvent: '',
+        deleteGuest: '',
         showDelete: false,
-        successAlert: "Event successfully deleted.",
+        successAlert: "Guest successfully deleted.",
         showAlert: true,
         success: 1,
-        events: events,
+        guests: guests,
       })
     }
     catch(e) {
@@ -354,36 +350,35 @@ export default class EditEvents extends Component {
   }
 
   changeOrder = (index, newIndex) => {
-    const faq = this.state.events
-    const question = faq[index]
+    const guests = this.state.guests
+    const guest = guests[index]
     if (index = newIndex) {
       return
     }
     else if (index > newIndex){
-      faq.splice(newIndex, 0, question)
-      faq.splice((index + 1), 1)
-      console.log(faq)
+      guests.splice(newIndex, 0, guest)
+      guests.splice((index + 1), 1)
     }
     else {
-      faq.splice(newIndex, 0, question)
-      faq.splice((index -1), 1)
-      console.log(faq)
+      guests.splice(newIndex, 0, guest)
+      guests.splice((index -1), 1)
+      console.log(guests)
     }
 
 
   }
 
-  getImageUrl = async (events) => {
+  getImageUrl = async (guests) => {
       console.log('get image url')
-      const eventArray = events
+      const guestArray = guests
       const newArray = [];
 
-    for(let i=0;i<eventArray.length;i++){
-        if(eventArray[i].eventImage){
+    for(let i=0;i<guestArray.length;i++){
+        if(guestArray[i].guestImage){
             try {
-                console.log(eventArray[i].eventImage)
+                console.log(guestArray[i].guestImage)
                 let imageURL
-                imageURL = await Storage.vault.get(events[i].eventImage);
+                imageURL = await Storage.vault.get(guests[i].guestImage);
                 newArray[i] = imageURL
             }
             catch(e){
@@ -395,17 +390,17 @@ export default class EditEvents extends Component {
   }
 
   getEventImages = async () => {
-    const eventArray = this.state.events
+    const guestArray = this.state.guests
     const eventBoop = [];
     console.log('doing event images')
 
-    if (eventArray) {
-        for(let i=0;i<eventArray.length;i++){
-            if(eventArray[i].eventImage){
+    if (guestArray) {
+        for(let i=0;i<guestArray.length;i++){
+            if(guestArray[i].guestImage){
                 try {
-                    console.log(eventArray[i].eventImage)
+                    console.log(guestArray[i].guestImage)
                     let imageURL
-                    imageURL = await Storage.vault.get(eventArray[i].eventImage);
+                    imageURL = await Storage.vault.get(guestArray[i].guestImage);
                     eventBoop[i] = imageURL
                 }
                 catch(e){
@@ -415,13 +410,13 @@ export default class EditEvents extends Component {
         }
     }
     else {
-        let newArray = this.state.newEvents;
+        let newArray = this.state.newGuests;
         for(let i=0;i<newArray.length;i++){
-            if(newArray[i].eventImage){
+            if(newArray[i].guestImage){
                 try {
-                    console.log(newArray[i].eventImage)
+                    console.log(newArray[i].guestImage)
                     let imageURL
-                    imageURL = await Storage.vault.get(newArray[i].eventImage);
+                    imageURL = await Storage.vault.get(newArray[i].guestImage);
                     eventBoop[i] = imageURL
                 }
                 catch(e){
@@ -438,21 +433,21 @@ export default class EditEvents extends Component {
     })
   }
 
-  mapEvents = () => {
-    let events = this.state.events;
+  mapGuests = () => {
+    let guests = this.state.guests;
     let imageUrls = this.state.imageUrls;
-    console.log(events)
+    console.log(guests)
 
-    return events.map((event, i) =>
-        i === this.state.editEvent ? 
+    return guests.map((guest, i) =>
+        i === this.state.editGuest ? 
         <Card key={i}>
         <Card.Header>
         <div className="faq-header">
         <div className="faq-header-section"></div>
-        <div className="faq-header-section">Event {(i+1)}</div>
+        <div className="faq-header-section">Guest {(i+1)}</div>
         <div className="faq-header-section editOptions">
-            <i onClick={this.saveEdit} className="fas fa-save editIcon"></i> 
-            <i onClick={this.cancelEdit} className="fas fa-window-close editIcon redIcon"></i>
+            <i title="Click to save" onClick={this.saveEdit} className="fas fa-save editIcon"></i> 
+            <i title="Cancel edit" onClick={this.cancelEdit} className="fas fa-window-close editIcon redIcon"></i>
             </div>
         </div>
         </Card.Header>
@@ -461,38 +456,39 @@ export default class EditEvents extends Component {
         <Form.Group controlId="exampleForm.ControlSelect1">
             <Form.Label>Order</Form.Label>
             <Form.Control as="select">
-            {events.map((event, b) => 
+            {guests.map((guest, b) => 
             <option key={b} value={b}>{b+1}</option>)}
             </Form.Control>
         </Form.Group>
         </div>
-        <Form.Group controlId="eventHeaderEdit">
-          <Form.Label>Event Header</Form.Label>
+        <Form.Group controlId="guestNameEdit">
+          <Form.Label>Guest Name</Form.Label>
           <Form.Control
-            placeholder={event.eventHeader}
+            placeholder={guest.guestName}
             onChange={this.handleChange}
-            value={this.state.eventHeaderEdit}
+            value={this.state.guestNameEdit}
             />
           <Form.Text className="text-muted">
-            The header for the event, will be in large text above your blurb. 
+            The name of the guest.
           </Form.Text>
         </Form.Group>
-        <Form.Group controlId="eventBlurbEdit">
-          <Form.Label>Event Blurb</Form.Label>
+        <Form.Group controlId="guestBlurbEdit">
+          <Form.Label>Guest Blurb</Form.Label>
           <Form.Control
-            placeholder={event.eventBlurb}
+            as="textarea"
+            placeholder={guest.guestBlurb}
             onChange={this.handleChange}
-            value={this.state.eventBlurbEdit}
+            value={this.state.guestBlurbEdit}
             />
           <Form.Text className="text-muted">
-            A description of the event. 
+            A description of the guest. 
           </Form.Text>
         </Form.Group>
         <Form.Group controlId="file">
-                {this.state.bannerURL && <img src={this.state.bannerURL} max-width='100%' width='100%'></img>}
+                <div className="event-image">{guest.guestImage && <img min-height='100px' src={imageUrls[i]}></img>}</div>
                 <Form.Control style={{textAlign:"center"}} onChange={this.handleFileChange} type="file" />
                 <Form.Text className="text-muted">
-                Upload a picture for the event.
+                Upload a picture for the guest.
             </Form.Text>   
         </Form.Group>         
         </Card.Body>
@@ -502,52 +498,50 @@ export default class EditEvents extends Component {
         <Card.Header>
         <div className="faq-header">
             <div className="faq-header-section"></div>
-            <div className="faq-header-section">Event {(i+1)}</div> 
+            <div className="faq-header-section">Guest {(i+1)}</div> 
             <div className="faq-header-section editOptions">
-            <i onClick={() => this.editEvent(event, i)} className="fas fa-edit editIcon"></i>
+            <i onClick={() => this.editGuest(guest, i)} className="fas fa-edit editIcon"></i>
             <i id={"showDelete"} onClick={() => this.askToDelete(i)} className="fas fa-trash-alt editIcon"></i>
             </div>
         </div>
         </Card.Header>
         <Card.Body>
         <Form.Group controlId="query">
-          <Form.Label>Event Title</Form.Label>
+          <Form.Label>Guest Name</Form.Label>
           <Form.Control
             readOnly
-            placeholder="Enter event header"
+            placeholder="Enter guest name"
             onChange={this.handleChange}
-            value={event.eventHeader}
+            value={guest.guestName}
             />
           <Form.Text className="text-muted">
-            The header for the event, will be in large text above your blurb. 
+            The name of the guest.
           </Form.Text>
         </Form.Group>
         <Form.Group controlId="query">
-          <Form.Label>Event Blurb</Form.Label>
+          <Form.Label>Guest Blurb</Form.Label>
           <Form.Control
+            as="textarea"
             readOnly
-            placeholder="Enter event blurb"
+            placeholder="Enter guest blurb"
             onChange={this.handleChange}
-            value={event.eventBlurb}
+            value={guest.guestBlurb}
             />
           <Form.Text className="text-muted">
-            A description of the event. 
+            A description of the guest.
           </Form.Text>
         </Form.Group>
-        {(event.eventImage) 
+        {(guest.guestImage) 
           ?
           (<Form.Group>
-            <Form.Label className="text-center" style={{display:'inline-block'}}>Event Picture</Form.Label>
+            <Form.Label className="text-center" style={{display:'inline-block'}}>Guest Picture</Form.Label>
             <div className="event-image">
               <img min-height='100px' src={imageUrls[i]}></img>
             </div>
-            <Form.Text className="text-muted">
-              Event picture. 
-            </Form.Text>
           </Form.Group>)
             :
             (<div>
-              
+              No image.
             </div>)
           }
         </Card.Body>
@@ -560,26 +554,25 @@ export default class EditEvents extends Component {
     this.file = event.target.files[0];
   }
 
-  eventsPanel = () => {
-    const events = this.state.events;
-    console.log(events)
+ guestsPanel = () => {
+    const guests = this.state.guests;
 
-    if(events === undefined){
+    if(guests === undefined){
         return (
             <div>
-                {this.state.createEvent && this.newEvent()}
+                {this.state.createGuest && this.newGuest()}
                 <div className="loading-icon">
                   <i className="fas fa-circle-notch fa-spin Loading"></i>
                 </div>
             </div>
         )
     }
-    else if(events === null || events.length === 0){
+    else if(guests === null || guests.length === 0){
       return (
         <div>
-          {this.state.createEvent && this.newEvent()}
+          {this.state.createGuest && this.newGuest()}
           <div className="loading-icon">
-            No events. Add some to advertise your convention.
+            No guests. Add some to inform attendees.
           </div>
         </div>
       )
@@ -587,8 +580,8 @@ export default class EditEvents extends Component {
     else {
         return (
             <div>
-                {this.state.createEvent && this.newEvent()}
-                {this.mapEvents()}
+                {this.state.createGuest && this.newGuest()}
+                {this.mapGuests()}
             </div>
         )
     }
@@ -602,13 +595,13 @@ export default class EditEvents extends Component {
           <Breadcrumb.Item href={`/convention/${this.state.conId}`}>
             Dashboard
           </Breadcrumb.Item>
-          <Breadcrumb.Item active>Events</Breadcrumb.Item>
+          <Breadcrumb.Item active>Guests</Breadcrumb.Item>
         </Breadcrumb>
         <div className="dashboard-container-basic">
         <Dashboard conId={this.state.conId}/>
           <div className='mainContainer'>
             <div className="section-header">
-              <h3>Events Section</h3>
+              <h3>Guests Section</h3>
             </div>
             <div className="alert-section">
                 <AlertComponent 
@@ -618,8 +611,8 @@ export default class EditEvents extends Component {
                   show={this.state.showAlert}/>
             </div>
             <div className="faq-panel">
-              <div className="faq-control"><Button id={"show"} onClick={this.createEvent}><i className="fas fa-plus-circle"></i> Add Event</Button></div>
-              {this.state.events !== undefined && this.eventsPanel()}
+              <div className="faq-control"><Button id={"show"} onClick={this.createGuest}><i className="fas fa-plus-circle"></i> Add Guest</Button></div>
+              {this.state.guests !== undefined && this.guestsPanel()}
             </div>
           </div>
           <div className='filler'>
@@ -632,10 +625,10 @@ export default class EditEvents extends Component {
           onHide={this.handleDeleteHide}>
           <div className="delete-panel">
             <div>
-              Are you sure you want to delete this event?
+              Are you sure you want to delete this guest?
             </div>
             <div className="delete-panel-buttons">
-            <Button variant={"primary"} onClick={this.deleteEvent}>Yes</Button>
+            <Button variant={"primary"} onClick={this.deleteGuest}>Yes</Button>
             <Button variant={"primary"} onClick={this.cancelDelete}>No</Button>
             </div>
           </div>
@@ -647,30 +640,31 @@ export default class EditEvents extends Component {
           show={this.state.show} 
           onHide={this.handleHide}>
         <Form>
-        <Form.Group controlId="eventHeader">
+        <Form.Group controlId="guestName">
           <Form.Control 
-            placeholder="Enter event header."
+            placeholder="Enter guest name."
             onChange={this.handleChange}
-            value={this.state.eventHeader}
+            value={this.state.guestName}
           />
           <Form.Text className="text-muted">
-            Your event's header.
+            Your guest's name.
           </Form.Text>
         </Form.Group>
-        <Form.Group controlId="eventBlurb">
-          <Form.Control 
-            placeholder="Enter event blurb."
+        <Form.Group controlId="guestBlurb">
+          <Form.Control
+            as="textarea" 
+            placeholder="Enter guest blurb."
             onChange={this.handleChange}
-            value={this.state.eventBlurb}
+            value={this.state.guestBlurb}
           />
           <Form.Text className="text-muted">
-            The event's blurb, a short description.
+            The guest's blurb, a short description.
           </Form.Text>
         </Form.Group>
             <Form.Group controlId="file">
               {this.state.bannerURL && <img src={this.state.bannerURL} max-width='100%' width='100%'></img>}
               <Form.Control onChange={this.handleFileChange} type="file" />
-              <Form.Text className="text-muted">Upload an image to spice up your event. If no image is uploaded, only the header and blurb will be shown.</Form.Text>
+              <Form.Text className="text-muted">Upload an image for your guest. If no image is uploaded, a placeholder will be shown.</Form.Text>
             </Form.Group>
         <LoaderButton
           onSuccess={this.state.isSuccessful}
@@ -679,11 +673,11 @@ export default class EditEvents extends Component {
           disabled={!this.validateForm()}
           type="submit"
           isLoading={this.state.isLoading}
-          text="Create Event"
+          text="Create Guest"
           loadingText="Creating…"
         />
         <Form.Text className="text-muted">
-          Use events to showcase the biggest draws for your convention.
+          Use guests to showcase the biggest draws for your convention.
         </Form.Text>
       </Form>
         </ModalComponent>

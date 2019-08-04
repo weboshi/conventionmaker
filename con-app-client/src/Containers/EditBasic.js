@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
+import { Dashboard } from "../components/Dashboard";
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
 import { API, Storage } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 import { AlertComponent } from '../components/AlertComponent';
@@ -56,14 +58,14 @@ export default class CreateConvention extends Component {
   componentDidMount = async () => {
     try {
       const convention = await this.getConvention();
-      const { title, headline, description, eventLocation, startDate, endDate } = convention;
-      console.log(convention)
+      const { title, headline, description, eventLocation, startDate, endDate, conId } = convention;
 
       this.setState({
         convention,
         title,
         headline,
         description,
+        conId,
         query: eventLocation,
         startDate: new Date(startDate),
         endDate: new Date(endDate)
@@ -91,6 +93,7 @@ export default class CreateConvention extends Component {
         successAlert: "Successfully updated.",
         showAlert: 1,
         isLoading: false,
+        editing: '',
       })
     }
     catch(e) {
@@ -100,6 +103,7 @@ export default class CreateConvention extends Component {
         successAlert: e,
         showAlert: 1,
         isLoading: false,
+        editing: '',
       })
     }
   }
@@ -187,6 +191,7 @@ export default class CreateConvention extends Component {
   renderForm = () => {
     let currentEdit = this.state.editing
     return (
+      <div className="form-container">
         <Form>
           <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdtmzsWcW2cs3bRTm2CNdNyVjfj0wEqmg&libraries=places"          
           onLoad={this.handleScriptLoad}        
@@ -344,25 +349,40 @@ export default class CreateConvention extends Component {
             onClick={this.handleSubmit}
         />
     </Form>
+    </div>
     )
   }
 
   render() {
     return (
       <div className="Edit-Convention-Basic">
+      <Breadcrumb>
+        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+        <Breadcrumb.Item href={`/convention/${this.state.conId}`}>
+          Dashboard
+        </Breadcrumb.Item>
+        <Breadcrumb.Item active>Basic Details</Breadcrumb.Item>
+      </Breadcrumb>
         <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdtmzsWcW2cs3bRTm2CNdNyVjfj0wEqmg&libraries=places"          
           onLoad={this.handleScriptLoad}        
         />
-            <h2 style={{textAlign:'center'}}>Basic Details</h2>
-            <div className="alert-section">
-            <AlertComponent  
+        <div className="dashboard-container-basic">
+          <Dashboard conId={this.state.conId}/>
+          <div className="mainContainer">
+          <h3 style={{textAlign:'center'}}>Basic Details</h3>
+          <div className="alert-section">
+          <AlertComponent  
               success={this.state.success} 
               successAlert={this.state.successAlert} 
               handleDismiss={this.handleDismiss} 
               show={this.state.showAlert}>
-            </AlertComponent>
-            </div>
-            {this.renderForm()}
+          </AlertComponent>
+          </div>
+          {this.renderForm()}
+          </div>
+          <div className="filler">
+          </div>
+        </div>
       </div>
     );
   }

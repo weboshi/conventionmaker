@@ -1,0 +1,41 @@
+.convention-dashboard {
+    width: 12rem;
+    margin-left: 1rem;
+    height: auto;
+    margin-top: 2rem;
+}
+
+.convention-dashboard-links {
+    border: .5px solid rgb(201, 201, 201);
+    border-radius: 5px;
+
+}
+
+.convention-dashboard-links ul {
+    text-align: left;
+    list-style: none;
+    padding: 1rem;
+    margin-bottom: 0 !important;
+}
+
+.convention-dashboard-links a:hover {
+    text-decoration: none;
+}
+
+.convention-dashboard-links a {
+    display: block;
+    padding: .3rem;
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+    border-radius: 3px;
+
+}
+
+.convention-dashboard-links a:hover {
+    background-color: rgba(177, 194, 236);
+}
+
+.selected {
+    background-color: rgb(223, 232, 255);
+    font-weight: bold;
+}

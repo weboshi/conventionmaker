@@ -1,6 +1,5 @@
 .faq-panel { 
     width: 100%;
-    text-align: center;
 }
 
 .faq-control {
@@ -45,6 +44,7 @@
 .faq-header-section {
     display: inline-block;
     width: 33%;
+    text-align: center;
 }
 
 .editOptions {
@@ -88,4 +88,13 @@
 
 .alert-p {
     margin-bottom: 0;
+}
+
+.header-faq {
+    justify-content: space-between;
+    display: flex;
+}
+
+.faq-header .faq-header-section:nth-child(2) {
+    text-align: center !important;
 }

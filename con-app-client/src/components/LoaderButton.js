@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import "./LoaderButton.css";
 
 export default ({
+
   isLoading,
   onSuccess,
   text,
@@ -10,6 +11,9 @@ export default ({
   loadingText,
   className = "",
   disabled = false,
+  warning,
+  ready,
+  checking,
   ...props
 }) =>
   <Button
@@ -18,7 +22,10 @@ export default ({
     {...props}
   >
     {/* {isLoading && } */}
-    {isLoading && !onSuccess && loadingText}
+    {(isLoading && !onSuccess) && loadingText}
+    {(isLoading && onSuccess) && successText }
     {!isLoading && !onSuccess && text}
-    {onSuccess && successText}
+    {warning && <span> <i className="fas fa-exclamation-triangle"></i></span>}
+    {ready && <i class="fas fa-upload"></i>}
+    {checking && <i className="fas fa-cog fa-spin"></i>}
   </Button>

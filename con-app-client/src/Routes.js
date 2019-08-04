@@ -16,7 +16,12 @@ import Convention from "./Containers/Convention";
 import EditFaq from "./Containers/EditFaq";
 import EditLanding from "./Containers/EditLanding";
 import EditEvents from "./Containers/EditEvents";
-
+import EditSchedule from "./Containers/EditSchedule";
+import EditGuests from "./Containers/EditGuests";
+import EditLinks from "./Containers/EditLinks";
+import PublishConvention from"./Containers/Publish";
+import PreviewConvention from "./Containers/Preview";
+import HomePage from "./Containers/HomePage";
 
 export default ({ childProps }) =>
   <Switch>
@@ -32,6 +37,12 @@ export default ({ childProps }) =>
     <AuthenticatedRoute path="/convention/edit/faq/:id" exact component={EditFaq} props={childProps} />
     <AuthenticatedRoute path="/convention/edit/landing/:id" exact component={EditLanding} props={childProps} />
     <AuthenticatedRoute path="/convention/edit/events/:id" exact component={EditEvents} props={childProps} />
+    <AuthenticatedRoute path="/convention/edit/schedule/:id" exact component={EditSchedule} props={childProps} />
+    <AuthenticatedRoute path="/convention/edit/guests/:id" exact component={EditGuests} props={childProps} />
+    <AuthenticatedRoute path="/convention/edit/links/:id" exact component={EditLinks} props={childProps} />
+    <AuthenticatedRoute path="/convention/publish/:id" exact component={PublishConvention} props={childProps} />
+    <AuthenticatedRoute path="/convention/preview/:id" exact component={PreviewConvention} props={childProps} />
+    <AuthenticatedRoute path="/home" exact component={HomePage} props={childProps} />
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFound} />
   </Switch>
