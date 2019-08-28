@@ -8,6 +8,10 @@ export default {
     REGION: "us-west-1",
     URL: "https://kvbj8eu2dj.execute-api.us-west-1.amazonaws.com/prod"
   },
+  apiGateway2: {
+    REGION: "us-west-1",
+    URL: "https://kvbj8eu2dj.execute-api.us-west-1.amazonaws.com/prod/public-conventions"
+  },
   cognito: {
     REGION: "us-west-2",
     USER_POOL_ID: "us-west-2_3MIb6Kzye",

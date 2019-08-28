@@ -36,3 +36,11 @@
 .notes h1 {
   margin-bottom: 2rem;
 }
+
+.list-group a{
+  padding: 1rem;
+}
+
+.notes h3 {
+  margin-bottom: 2rem;
+}

@@ -47,7 +47,6 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
-
   get:
     # Defines an HTTP API endpoint that calls the main function in get.js
     # - path: url path is /notes/{id}
@@ -56,6 +55,28 @@ functions:
     events:
       - http:
           path: conventions/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  get-public:
+    # Defines an HTTP API endpoint that calls the main function in get.js
+    # - path: url path is /notes/{id}
+    # - method: GET request
+    handler: get.mainPublic
+    events:
+      - http:
+          path: public-conventions/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  list-public:
+    # Defines an HTTP API endpoint that calls the main function in list.js
+    # - path: url path is /notes
+    # - method: GET request
+    handler: list.mainPublic
+    events:
+      - http:
+          path: public-conventions
           method: get
           cors: true
           authorizer: aws_iam
@@ -158,17 +179,47 @@ functions:
           method: put
           cors: true
           authorizer: aws_iam
+  update-published:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: update.publish
+    events:
+      - http:
+          path: conventions/updatePublished/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
   delete:
-      # Defines an HTTP API endpoint that calls the main function in delete.js
-      # - path: url path is /notes/{id}
-      # - method: DELETE request
-      handler: delete.main
-      events:
-        - http:
-            path: conventions/{id}
-            method: delete
-            cors: true
-            authorizer: aws_iam
+    # Defines an HTTP API endpoint that calls the main function in delete.js
+    # - path: url path is /notes/{id}
+    # - method: DELETE request
+    handler: delete.main
+    events:
+      - http:
+          path: conventions/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+  delete-public:
+    # Defines an HTTP API endpoint that calls the main function in delete.js
+    # - path: url path is /notes/{id}
+    # - method: DELETE request
+    handler: delete.removePublic
+    events:
+      - http:
+          path: public-conventions/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+  create-public:
+    handler: create.addPublic
+    events:
+      - http:
+          path: public-conventions
+          method: post
+          cors: true
+          authorizer: aws_iam
 # Create our resources with separate CloudFormation templates
 resources:
     # API Gateway Errors

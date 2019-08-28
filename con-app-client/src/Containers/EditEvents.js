@@ -108,7 +108,7 @@ export default class EditEvents extends Component {
     this.setState({ isLoading: true });
 
     try {
-        await this.saveQuestion()
+        this.saveQuestion()
         if (this.state.newEvents){
             await this.updateConvention({
                 events: this.state.newEvents
@@ -120,17 +120,18 @@ export default class EditEvents extends Component {
             })
         }
     try {
-        await this.getEventImages()     
+        this.getEventImages()     
     }
     catch(e){
         alert(e)
     }
+    console.log('chalupa')
 
     this.setState({
         isSuccessful: 1,
         showAlert: true,
         successAlert: "Event successfully created.",
-        success: true,
+        success: 1,
         eventHeader: '',
         eventBlurb: '',
     })
@@ -145,7 +146,7 @@ export default class EditEvents extends Component {
 
     } catch (e) {
       alert(e);
-      this.setState({ isLoading: false });
+      this.setState({ isLoading: false, success: 0, successAlert: "Event was not added.", showAlert: true });
     }
   }
 
@@ -375,15 +376,14 @@ export default class EditEvents extends Component {
 
   getImageUrl = async (events) => {
       console.log('get image url')
+      const awsUrl = "https://convention-maker.s3-us-west-1.amazonaws.com/public/"
       const eventArray = events
       const newArray = [];
 
     for(let i=0;i<eventArray.length;i++){
         if(eventArray[i].eventImage){
             try {
-                console.log(eventArray[i].eventImage)
-                let imageURL
-                imageURL = await Storage.vault.get(events[i].eventImage);
+                let imageURL = awsUrl + eventArray[i].eventImage;
                 newArray[i] = imageURL
             }
             catch(e){
@@ -395,6 +395,7 @@ export default class EditEvents extends Component {
   }
 
   getEventImages = async () => {
+    const awsUrl = "https://convention-maker.s3-us-west-1.amazonaws.com/public/"
     const eventArray = this.state.events
     const eventBoop = [];
     console.log('doing event images')
@@ -403,9 +404,7 @@ export default class EditEvents extends Component {
         for(let i=0;i<eventArray.length;i++){
             if(eventArray[i].eventImage){
                 try {
-                    console.log(eventArray[i].eventImage)
-                    let imageURL
-                    imageURL = await Storage.vault.get(eventArray[i].eventImage);
+                    let imageURL = awsUrl + eventArray[i].eventImage;
                     eventBoop[i] = imageURL
                 }
                 catch(e){
@@ -419,9 +418,7 @@ export default class EditEvents extends Component {
         for(let i=0;i<newArray.length;i++){
             if(newArray[i].eventImage){
                 try {
-                    console.log(newArray[i].eventImage)
-                    let imageURL
-                    imageURL = await Storage.vault.get(newArray[i].eventImage);
+                    let imageURL = awsUrl + eventArray[i].eventImage;
                     eventBoop[i] = imageURL
                 }
                 catch(e){

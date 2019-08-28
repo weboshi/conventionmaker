@@ -1,0 +1,7 @@
+.delete-form {
+    margin: 1rem 0;
+}
+
+.delete-form .form-group label {
+    display: block !important;
+}

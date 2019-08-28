@@ -198,3 +198,7 @@
 .links {
     margin-top: 2rem;
 }
+
+#links-section {
+    margin-bottom: 0;
+}

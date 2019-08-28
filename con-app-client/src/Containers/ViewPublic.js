@@ -28,7 +28,7 @@ const CancelFormButton = (props) => {
   )
 }
 
-export default class PublishConvention extends Component {
+export default class ViewPublic extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,7 +50,6 @@ export default class PublishConvention extends Component {
     try {
         const convention = await this.getConvention();
         const {
-            conId,
             banner, 
             blurb, 
             description, 
@@ -66,9 +65,10 @@ export default class PublishConvention extends Component {
             guests,
             links
         } = convention;
+        console.log(convention)
 
-        const imageUrls = await this.getImageUrl(events);
-        const guestImages = await this.getGuestImageUrl(guests);
+        // const imageUrls = await this.getImageUrl(events);
+        // const guestImages = await this.getGuestImageUrl(guests);
         const modifiedSchedule = this.modifySchedule(schedule);
         const range = this.getRange(startDate, endDate)
         let bannerURL = 'https://convention-maker.s3-us-west-1.amazonaws.com/public/' + banner
@@ -77,12 +77,11 @@ export default class PublishConvention extends Component {
 
         this.setState({
             links,
-            guestImages,
             guests,
-            imageUrls,
-            conId,
             bannerURL, 
-            blurb, 
+            blurb,
+            // imageUrls,
+            // guestImages,
             description, 
             endDate,
             eventLocation, 
@@ -111,7 +110,9 @@ export default class PublishConvention extends Component {
   }
 
   getConvention() {
-    return API.get("conventions", `/conventions/${this.props.match.params.id}`);
+      console.log(typeof(this.props.match.params.id))
+      console.log(this.props.match.params.id)
+    return API.get("conventions", `/public-conventions/${this.props.match.params.id}`);
   }
 
   handleChange = event => {
@@ -144,7 +145,7 @@ export default class PublishConvention extends Component {
         event.eventImage ? 
         <div className="preview-eventPanelImage" key={i}>
             <div className="inlineBlock">
-                <img width={'80%'} height={'auto'} src={images[i]}></img>
+                {/* <img width={'80%'} height={'auto'} src={images[i]}></img> */}
             </div>
             <div className="event-div">
                 <h3>{event.eventHeader}</h3>

@@ -1,0 +1,16 @@
+.main-footer {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.5rem;
+    padding: 1rem;
+    align-items: center;
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-weight: 300;
+    text-decoration: none;
+}
+
+.main-footer a {
+    text-decoration: none;
+}

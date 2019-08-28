@@ -30,8 +30,7 @@
 }
 
 .publish-end {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin: 1rem 0;
     display: flex;
     justify-content: center;
 }
@@ -44,13 +43,45 @@
     background-color: #d4edda;
 }
 
+.checking-publish-button {
+    border-radius: 5px;
+    border: 1px solid rgb(42, 45, 250);
+    width: 100%;
+    padding: 1rem;
+    background-color: #bdbdbd;
+}
+
 .publish-message {
     color: green;
+}
 
+.publish-message-checking{
+    color: white;
 }
 
 .flex-publish {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+}
+
+.mainContainer {
+    margin-left: 2rem;
+}
+
+.fail-publish-message {
+    color: rgb(0, 0, 0);
+}
+
+.fail-publish-button {
+    border-radius: 5px;
+    border: 1px solid rgb(246, 250, 42);
+    width: 100%;
+    padding: 1rem;
+    background-color: #ffe77b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
 }

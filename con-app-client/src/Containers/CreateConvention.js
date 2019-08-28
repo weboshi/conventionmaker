@@ -5,7 +5,8 @@ import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import { API } from "aws-amplify";
 import Script from 'react-load-script';
-import { s3Upload } from "../libs/awsLib"
+import { s3Upload } from "../libs/awsLib";
+import TagsInput from 'react-tagsinput'
 import "./CreateConvention.css";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -21,7 +22,9 @@ export default class CreateConvention extends Component {
         headline: '',
         description: '',
         city: '',
-        query: ''
+        query: '',
+        tags: [],
+        conventionCategory: null
       };
       this.handleStartDateChange = this.handleStartDateChange.bind(this);
       this.handleEndDateChange = this.handleEndDateChange.bind(this);
@@ -30,7 +33,7 @@ export default class CreateConvention extends Component {
   }
 
   validateForm() {
-    return this.state.title.length > 0 && this.state.headline.length > 0 && this.state.description.length > 0 && this.state.query.length > 0 && this.state.startDate && this.state.endDate;
+    return this.state.title.length > 0 && this.state.headline.length > 0 && this.state.description.length > 0 && this.state.query.length > 0 && this.state.conventionCategory && this.state.tags.length >= 1 && this.state.startDate && this.state.endDate;
   }
 
   handleStartDateChange(date) {
@@ -64,13 +67,15 @@ export default class CreateConvention extends Component {
         description: this.state.description,
         startDate: this.state.startDate,
         endDate: this.state.endDate,
-        eventLocation: this.state.query
+        eventLocation: this.state.query,
+        conventionCategory: this.state.conventionCategory,
+        conventionTags: this.state.tags
       });
       await this.setState({
         isSuccessful: true
       })
       setTimeout(() => {
-        this.props.history.push("/")
+        this.props.history.push("/dashboard")
       }, 1000);
     } catch (e) {
       alert(e);
@@ -116,6 +121,13 @@ export default class CreateConvention extends Component {
     }
   }
 
+  handleTagsChange = (tags) => {
+    console.log(tags)
+    this.setState({
+      tags: tags
+    })
+  }
+
   render() {
     return (
       <div className="Create-Convention">
@@ -156,6 +168,32 @@ export default class CreateConvention extends Component {
              />
             <Form.Text className="text-muted">
               Describe your convention.
+            </Form.Text>
+          </Form.Group>
+          <Form.Group controlId="conventionCategory">
+            <Form.Label>Convention Category</Form.Label>
+            <Form.Control as="select" onChange={this.handleChange}>
+              <option>Choose...</option>
+              <option value="Anime">Anime</option>
+              <option value="Books">Books</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Food">Food</option>
+              <option value="Games">Games</option>
+              <option value="Music">Music</option>
+              <option value="Sports">Sports</option>
+              <option value="Tech">Tech</option>
+              <option value="Television">Television</option>
+              <option value="Video Games">Video Games</option>
+            </Form.Control>
+            <Form.Text className="text-muted">
+              Choose one category for your convention.
+            </Form.Text>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Convention Tags</Form.Label>
+            <TagsInput value={this.state.tags} onChange={this.handleTagsChange} />
+            <Form.Text className="text-muted">
+              Tags that make your convention easier to find.
             </Form.Text>
           </Form.Group>
           <Form.Group controlId="query">

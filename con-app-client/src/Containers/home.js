@@ -72,7 +72,7 @@ export default class Home extends Component {
   renderNotes() {
     return (
       <div className="notes">
-        <h3>Your Conventions</h3>
+        <h3>Your Convention Dashboard</h3>
         <ListGroup>
           {!this.state.isLoading && this.renderNotesList(this.state.notes)}
         </ListGroup>

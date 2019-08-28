@@ -20,9 +20,8 @@ export default class Home extends Component {
   
     try {
       const conventions = await this.conventions();
-      let conventionImages = await this.getImageUrl(conventions);
 
-      this.setState({ conventions, conventionImages });
+      this.setState({ conventions });
     } catch (e) {
       alert(e);
     }
@@ -31,27 +30,9 @@ export default class Home extends Component {
   }
   
   conventions() {
-    return API.get("conventions", "/conventions");
+    return API.get("conventions", "/public-conventions");
   }
-
-  getImageUrl = async (events) => {
-    const guestArray = events
-    const newArray = [];
-
-    for(let i=0;i<guestArray.length;i++){
-        if(guestArray[i].banner){
-            try {
-                let imageURL
-                imageURL = await Storage.vault.get(events[i].banner);
-                newArray[i] = imageURL
-            }
-            catch(e){
-                console.log(e)
-            }
-        }
-    }
-    return newArray
-    }  
+ 
 
   formatDate = (date) => {
     let dateMonth = new Date(date);
@@ -67,37 +48,33 @@ export default class Home extends Component {
   redirectUrl = id => {
     console.log('boop')
     console.log(id)
-    window.open(`/convention/preview/${id}`, "blank_")
+    console.log(typeof(id))
+    window.open(`/view/${id}`, "blank_")
   }
   renderConventionsList = () => {
     const conventions = this.state.conventions;
-    const conventionImages = this.state.conventionImages;
     return conventions.map(
       (convention, i) =>
           // <LinkContainer
           //     key={convention.conId}
           //     to={`/convention/preview/${convention.conId}`}
           //   >
-              <ListGroup.Item action onClick={() => this.redirectUrl(convention.conId)} key={i}>
+              <ListGroup.Item action onClick={() => this.redirectUrl(convention.conventionId)} key={i}>
                 <div className="convention-panel">
                     <div className="date-panel">
                         <p>{(new Date(convention.startDate)).getDate()}</p>
                         <p>{(this.formatMonth(convention.startDate))}</p>
                     </div>
-                    <div className="information-panel">
-                        <p>{convention.title.trim().split("\n")[0]}</p>
-                        {/* {"Created: " + new Date(convention.createdAt).toLocaleString()} */}
-                        <p>{this.formatDate(convention.startDate)} - {this.formatDate(convention.endDate)}</p>
-                        <p>{convention.eventLocation}</p>
+                    <div className="right-panel">
+                      <div className="information-panel">
+                          <p>{convention.title.trim().split("\n")[0]}</p>
+                          {/* {"Created: " + new Date(convention.createdAt).toLocaleString()} */}
+                          <p>{this.formatDate(convention.startDate)} - {this.formatDate(convention.endDate)}</p>
+                          <p>{convention.eventLocation}</p>
+                      </div>
+                      <div className="picture-panel" style={{backgroundImage:`url(https://convention-maker.s3-us-west-1.amazonaws.com/public/${convention.banner})`}}>
+                      </div>
                     </div>
-                    {convention.banner ? 
-
-                    <div className="picture-panel" style={{backgroundImage:`url(${conventionImages[i]})`}}>
-                    </div>
-                    :
-                    <div className="picture-panel">
-                    </div>
-                    }
                 </div>
               </ListGroup.Item>
             // </LinkContainer>
@@ -119,9 +96,18 @@ export default class Home extends Component {
   render() {
     return (
       <div className="Home container">
+        <div className="welcome">
+          <h2>Welcome to Convention Maker</h2>
+          <p>
+            Welcome to Convention Maker, where you can create landing pages for your convention and look for upcoming conventions.
+          </p>
+        </div>
         <h3 className="page-header">Upcoming Conventions</h3>
         <div className="convention-list">
-            {this.state.isLoading ? <i className="fas fa-circle-notch fa-spin"></i>
+            {this.state.isLoading ? 
+            <div className="homepage-loading">
+              <i className="fas fa-circle-notch fa-spin"></i>
+            </div>
             : this.renderConventionsList()}
         </div>
       </div>

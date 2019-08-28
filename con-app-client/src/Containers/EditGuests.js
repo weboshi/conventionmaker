@@ -130,7 +130,7 @@ export default class EditGuests extends Component {
         isSuccessful: 1,
         showAlert: true,
         successAlert: "Guest successfully created.",
-        success: true,
+        success: 1,
         guestName: '',
         guestBlurb: '',
     })
@@ -145,7 +145,7 @@ export default class EditGuests extends Component {
 
     } catch (e) {
       alert(e);
-      this.setState({ isLoading: false });
+      this.setState({ isLoading: false, success: 0, successAlert: "Guest not added.", showAlert: true });
     }
   }
 
@@ -181,6 +181,7 @@ export default class EditGuests extends Component {
             guestBlurb: this.state.guestBlurb,
             guestImage: attachment,
         }
+        console.log(newGuest)
         guests.push(newGuest)
         this.setState({
           guests: guests
@@ -369,6 +370,7 @@ export default class EditGuests extends Component {
   }
 
   getImageUrl = async (guests) => {
+      const awsUrl = "https://convention-maker.s3-us-west-1.amazonaws.com/public/"
       console.log('get image url')
       const guestArray = guests
       const newArray = [];
@@ -377,8 +379,8 @@ export default class EditGuests extends Component {
         if(guestArray[i].guestImage){
             try {
                 console.log(guestArray[i].guestImage)
-                let imageURL
-                imageURL = await Storage.vault.get(guests[i].guestImage);
+                let imageURL = awsUrl + guestArray[i].guestImage;
+                console.log(imageURL)
                 newArray[i] = imageURL
             }
             catch(e){
@@ -390,6 +392,7 @@ export default class EditGuests extends Component {
   }
 
   getEventImages = async () => {
+    const awsUrl = "https://convention-maker.s3-us-west-1.amazonaws.com/public/"
     const guestArray = this.state.guests
     const eventBoop = [];
     console.log('doing event images')
@@ -398,9 +401,7 @@ export default class EditGuests extends Component {
         for(let i=0;i<guestArray.length;i++){
             if(guestArray[i].guestImage){
                 try {
-                    console.log(guestArray[i].guestImage)
-                    let imageURL
-                    imageURL = await Storage.vault.get(guestArray[i].guestImage);
+                    let imageURL = awsUrl + guestArray[i].guestImage;
                     eventBoop[i] = imageURL
                 }
                 catch(e){
@@ -415,8 +416,7 @@ export default class EditGuests extends Component {
             if(newArray[i].guestImage){
                 try {
                     console.log(newArray[i].guestImage)
-                    let imageURL
-                    imageURL = await Storage.vault.get(newArray[i].guestImage);
+                    let imageURL = awsUrl + guestArray[i].guestImage;
                     eventBoop[i] = imageURL
                 }
                 catch(e){
@@ -436,6 +436,7 @@ export default class EditGuests extends Component {
   mapGuests = () => {
     let guests = this.state.guests;
     let imageUrls = this.state.imageUrls;
+    console.log(imageUrls)
     console.log(guests)
 
     return guests.map((guest, i) =>
@@ -636,7 +637,7 @@ export default class EditGuests extends Component {
         <ModalComponent 
           id={"show"} 
           size={"lg"} 
-          header={"Create Event"} 
+          header={"Add Guest"} 
           show={this.state.show} 
           onHide={this.handleHide}>
         <Form>

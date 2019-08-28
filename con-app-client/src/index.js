@@ -26,8 +26,8 @@ Amplify.configure({
           name: "conventions",
           endpoint: config.apiGateway.URL,
           region: config.apiGateway.REGION
-        },
-      ]
+        }
+    ]
     }
   });
   

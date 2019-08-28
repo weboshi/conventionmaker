@@ -1,4 +1,8 @@
 .NotFound {
-    padding-top: 100px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font: 1em sans-serif;
     text-align: center;
   }

@@ -25,6 +25,7 @@ export class Dashboard extends Component {
                     <li><NavLink to={`/convention/edit/schedule/${conId}`} activeClassName="selected">Schedule</NavLink></li>
                     <li><NavLink to={`/convention/edit/links/${conId}`} activeClassName="selected">Links</NavLink></li>
                     <li><NavLink to={`/convention/publish/${conId}`} activeClassName="selected">Publish</NavLink></li>
+                    <li><NavLink to={`/convention/delete/${conId}`} activeClassName="selected">Delete</NavLink></li>
                 </ul>
                 </div>
             </nav>

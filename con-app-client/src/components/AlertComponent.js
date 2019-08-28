@@ -17,9 +17,9 @@ export const AlertComponent = (props) => {
     
     else if (props.success === 0) {
       return (
-        <Alert show={props.show} variant="danger" onClose={props.handleDismiss} dismissible>
+      <Alert show={props.show} variant="danger" onClose={props.handleDismiss} dismissible>
             <p className="alert-p">
-              {props.successAlert}
+              {props.errorAlert}
             </p>
         </Alert>
       )

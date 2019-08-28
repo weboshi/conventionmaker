@@ -22,12 +22,16 @@ import EditLinks from "./Containers/EditLinks";
 import PublishConvention from"./Containers/Publish";
 import PreviewConvention from "./Containers/Preview";
 import HomePage from "./Containers/HomePage";
+import AboutPage from "./Containers/About";
+import ViewPublic from "./Containers/ViewPublic";
+import DeletePage from "./Containers/Delete";
 
 export default ({ childProps }) =>
   <Switch>
-    <AppliedRoute path="/" exact component={Home} props={childProps} />
+    <AppliedRoute path="/" exact component={HomePage} props={childProps} />
     <UnauthenticatedRoute path="/login" exact component={Login} props={childProps} />
     <UnauthenticatedRoute path="/signup" exact component={Signup} props={childProps} />
+    {/* <UnauthenticatedRoute path="/view/:id" exact component={ViewPublic} props={childProps} /> */}
     <AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />
     <AuthenticatedRoute path="/convention/new" exact component={CreateConvention} props={childProps} />
@@ -42,7 +46,10 @@ export default ({ childProps }) =>
     <AuthenticatedRoute path="/convention/edit/links/:id" exact component={EditLinks} props={childProps} />
     <AuthenticatedRoute path="/convention/publish/:id" exact component={PublishConvention} props={childProps} />
     <AuthenticatedRoute path="/convention/preview/:id" exact component={PreviewConvention} props={childProps} />
-    <AuthenticatedRoute path="/home" exact component={HomePage} props={childProps} />
+    <AuthenticatedRoute path="/about" exact component={AboutPage} props={childProps} />
+    <AuthenticatedRoute path="/dashboard" exact component={Home} props={childProps} />
+    <AuthenticatedRoute path="/view/:id" exact component={ViewPublic} props={childProps} />
+    <AuthenticatedRoute path="/convention/delete/:id" exact component={DeletePage} props={childProps} />
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFound} />
   </Switch>

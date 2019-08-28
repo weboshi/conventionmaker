@@ -64,7 +64,8 @@ export default class EditLanding extends Component {
        } = convention;
 
       if(banner) {
-        bannerURL = await Storage.vault.get(banner);
+        console.log(banner)
+        bannerURL = await Storage.get(banner);
         console.log(bannerURL)
       }
 
@@ -96,65 +97,7 @@ export default class EditLanding extends Component {
     }
   }
 
-  // async componentDidMount() {
-  //   try {
-  //     let bannerURL;
-  //     const convention = await this.getConvention();
-  //     console.log(convention)
-  //     const { 
-  //       title,
-  //       headline,
-  //       description,
-  //       startDate,
-  //       endDate,
-  //       banner,
-  //       blurb,
-  //       header,
-  //       faq,
-  //      } = convention;
-
-  //     if (banner) {
-  //       bannerURL = await Storage.vault.get(banner);
-  //       console.log(bannerURL)
-  //     }
-
-  //     if(header) {
-  //       this.setState({
-  //         convention,
-  //         title,
-  //         headline,
-  //         description,
-  //         startDate,
-  //         endDate,
-  //         bannerURL,
-  //         header,
-  //         blurb,
-  //         banner,
-  //         faq
-  //       });
-  //     }
-  //     else {
-  //       console.log("Smoop")
-  //       this.setState({
-  //         convention,
-  //         title,
-  //         headline,
-  //         description,
-  //         startDate,
-  //         endDate,
-  //         banner,
-  //         bannerURL,
-  //         header: '',
-  //         blurb: '',
-  //         faq
-  //       });
-  //     }
-
-  //   } catch (e) {
-  //     alert(e);
-  //   }
-  // }
-
+  
   getConvention() {
     return API.get("conventions", `/conventions/${this.props.match.params.id}`);
   }
@@ -255,6 +198,7 @@ export default class EditLanding extends Component {
       })
     }
     catch(e) {
+      console.log(e)
       this.setState({
         showAlert: 1,
         isLoading: false,
@@ -433,6 +377,7 @@ export default class EditLanding extends Component {
             <AlertComponent  
               success={this.state.success} 
               successAlert={this.state.successAlert} 
+              errorAlert={this.state.errorAlert}
               handleDismiss={this.handleDismiss} 
               show={this.state.showAlert}>
             </AlertComponent>

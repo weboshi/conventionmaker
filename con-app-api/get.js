@@ -25,3 +25,26 @@ export async function main(event, context) {
     return failure({ status: false });
   }
 }
+
+export async function mainPublic(event, context) {
+  const params = {
+    TableName: "public-conventions",
+
+    Key: {
+      conventionId: event.pathParameters.id,
+      conventionCategory: 'Frances'
+    }
+  };
+
+  try {
+    const result = await dynamoDbLib.call("get", params);
+    if (result.Item) {
+      // Return the retrieved item
+      return success(result.Item);
+    } else {
+      return failure({ status: false, error: "Item not found." });
+    }
+  } catch (e) {
+    return failure({ status: false });
+  }
+}

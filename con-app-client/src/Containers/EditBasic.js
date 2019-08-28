@@ -8,6 +8,7 @@ import LoaderButton from "../components/LoaderButton";
 import { AlertComponent } from '../components/AlertComponent';
 import Script from 'react-load-script';
 import { Auth } from "aws-amplify";
+import TagsInput from 'react-tagsinput'
 import "./EditBasic.css";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -39,6 +40,8 @@ export default class CreateConvention extends Component {
         description: '',
         city: '',
         query: '',
+        conventionTags: [],
+        conventionCategory: '',
       };
       this.handleStartDateChange = this.handleStartDateChange.bind(this);
       this.handleEndDateChange = this.handleEndDateChange.bind(this);
@@ -58,10 +61,12 @@ export default class CreateConvention extends Component {
   componentDidMount = async () => {
     try {
       const convention = await this.getConvention();
-      const { title, headline, description, eventLocation, startDate, endDate, conId } = convention;
+      const { title, headline, description, eventLocation, startDate, endDate, conId, conventionCategory, conventionTags } = convention;
 
       this.setState({
         convention,
+        conventionCategory,
+        conventionTags,
         title,
         headline,
         description,
@@ -70,6 +75,7 @@ export default class CreateConvention extends Component {
         startDate: new Date(startDate),
         endDate: new Date(endDate)
       })
+      console.log(conventionTags)
 
     }
     catch(e) {
@@ -86,7 +92,10 @@ export default class CreateConvention extends Component {
         headline: this.state.headline,
         description: this.state.description,
         startDate: this.state.startDate,
-        endDate: this.state.endDate
+        endDate: this.state.endDate,
+        conventionCategory: this.state.conventionCategory,
+        conventionTags: this.state.conventionTags,
+        eventLocation: this.state.query
       })
       this.setState({
         success: 1,
@@ -145,6 +154,7 @@ export default class CreateConvention extends Component {
   }
 
   handleEdit = (e) => {
+    console.log(e.target.id)
       this.setState({
           editing: e.target.id
       })
@@ -186,6 +196,13 @@ export default class CreateConvention extends Component {
         }
       );
     }
+  }
+
+  handleTagsChange = (tags) => {
+    console.log(tags)
+    this.setState({
+      conventionTags: tags
+    })
   }
 
   renderForm = () => {
@@ -273,6 +290,61 @@ export default class CreateConvention extends Component {
         Describe your convention.
       </Form.Text>
     </Form.Group>)}
+
+    {/* Category Edit */}
+    {(currentEdit === "conventionCategory") ?
+    (
+      <Form.Group controlid="conventionCategory">
+        <Form.Label>Convention Category <CancelFormButton onClick={this.handleCancel}/></Form.Label>
+          <Form.Control as="select" onChange={this.handleChange}>
+          <option>Choose...</option>
+          <option value="Anime">Anime</option>
+          <option value="Books">Books</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Food">Food</option>
+          <option value="Games">Games</option>
+          <option value="Music">Music</option>
+          <option value="Sports">Sports</option>
+          <option value="Tech">Tech</option>
+          <option value="Television">Television</option>
+          <option value="Video Games">Video Games</option>
+        </Form.Control>
+        <Form.Text>
+          Choose one category that best fits your convention.
+        </Form.Text>
+      </Form.Group>)
+      :
+      (
+        <Form.Group controlId="conventionCategory">
+        <Form.Label>Convention Category <EditFormButton id="conventionCategory" onClick={this.handleEdit}/></Form.Label>
+          <Form.Control readOnly as="select" onChange={this.handleChange}>
+          <option>{this.state.conventionCategory}</option>
+        </Form.Control>
+        <Form.Text>
+          Choose one category that best fits your convention.
+        </Form.Text>
+      </Form.Group>
+      )
+    }
+        {/*Description Section*/}
+        {(currentEdit === "conventionTags") ?
+      (<Form.Group controlId="conventionTags">
+        <Form.Label>Convention Tags <CancelFormButton onClick={this.handleCancel}/></Form.Label>
+        <TagsInput value={this.state.conventionTags} onChange={this.handleTagsChange} />
+        <Form.Text className="text-muted">
+          Tags that make your convention easier to find.
+        </Form.Text>
+      </Form.Group>)
+      :
+      (<Form.Group controlId="conventionTags">
+      <Form.Label>Convention Tags <EditFormButton id='conventionTags' onClick={this.handleEdit}/></Form.Label>
+      <TagsInput className="react-tags-disabled" disabled value={this.state.conventionTags} onChange={this.handleTagsChange} />
+      <Form.Text className="text-muted">
+        Tags that make your convention easier to find.
+      </Form.Text>
+    </Form.Group>)}
+
+    {/* Location Edit */}
     {(currentEdit === "query") ?
     (
       <Form.Group controlId="query">

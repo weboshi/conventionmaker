@@ -1,5 +1,67 @@
+@media (max-width: 768px) {
+  .form-control {
+    width: auto;
+  }
+}
 
+.App {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
 
 .App .navbar-brand {
   font-weight: bold;
+  padding: 0 !important;
+}
+
+.main-nav-link {
+  color: white !important;
+}
+
+.navbar {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.App .navbar {
+  /* border-bottom: .5px solid ragb(175, 173, 173); */
+  /* -webkit-box-shadow: 4px -4px 3px 4px rgba(0,0,0,0.75);
+  -moz-box-shadow: 4px -4px 3px 4px rgba(0,0,0,0.75);
+  box-shadow: 4px -4px 3px 4px rgba(0,0,0,0.75); */
+}
+
+.form-container {
+  margin-left: 2rem;
+}
+
+.container {
+  flex: 1;
+}
+
+.navbar-search {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.navbar i {
+  border: 2px solid white;
+  border-radius: 50%;
+  padding: .5rem;
+  margin-right: .5rem;
+}
+
+#c{
+  font-size: .5rem;
+  position: absolute;
+  left:20%;
+  top:20%;
+
+}
+
+#m{
+  font-size: .5rem;
+  position: absolute;
+  bottom:20%;
+  right:20%;
 }

@@ -1,0 +1,24 @@
+.about-container {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.about-text {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+
+.about-container p{
+    margin-top: 4rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    line-height: 2rem;
+}
